@@ -6,10 +6,15 @@ import { MdOutlineGroup } from "react-icons/md";
 import { RiPencilLine } from "react-icons/ri";
 import { baseUrl } from "../../../constants/api";
 import { UserEntity } from "../../../models/UserEntity";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../../../hook/firebase";
+import { deleteObjectFirebase } from "../../../hook/deleteFirebase";
 
 function Home() {
   const [data, setData] = useState<UserEntity>();
   const [openAvatar, setOpenAvatar] = useState(true);
+  const [avatar, setAvatar] = useState(null);
 
   const getUser = async () => {
     const jwtString = await sessionStorage.getItem("token");
@@ -19,6 +24,8 @@ function Home() {
       })
       .then((res) => {
         setData(res.data);
+        localStorage.setItem("id", res.data.id);
+        localStorage.setItem("avatar", res.data.avatar);
         //console.log(data);
       })
       .catch((error) => {
@@ -29,6 +36,44 @@ function Home() {
   useEffect(() => {
     getUser();
   }, []);
+
+  const selectAvatar = (e: any) => {
+    let selected = e.target.files[0];
+    if (!selected) return;
+    setAvatar(selected);
+    console.log(selected);
+  };
+
+  const id = sessionStorage.getItem("id");
+
+  const changeAvatar = async (id: string | null) => {
+    const jwtString = await sessionStorage.getItem("token");
+    if (avatar == null) {
+      return;
+    } else {
+      const avatarRef = ref(storage, `avatars/${v4()}`);
+      uploadBytes(avatarRef, avatar).then(() => {
+        getDownloadURL(avatarRef).then((url) => {
+          //deleteObjectFirebase()
+          axios
+            .put(
+              `${baseUrl}/api/users/avt/${id}`,
+              { avatar: url },
+              {
+                headers: { Authorization: `Bearer ${jwtString}` },
+              }
+            )
+            .then(() => {
+              alert("Y");
+            })
+            .catch((error) => {
+              alert("N");
+              console.log(error);
+            });
+        });
+      });
+    }
+  };
 
   return (
     <>
@@ -47,7 +92,7 @@ function Home() {
                     <img
                       src={data?.avatar == "" ? "/icon.png" : data?.avatar}
                       alt=""
-                      className="h-full w-auto border-none object-contain"
+                      className="h-full w-auto border-none object-cover"
                     />
                   </figure>
 
@@ -99,7 +144,7 @@ function Home() {
               <div className="flex overflow-hidden p-0 font-sans text-sm tracking-wide font-normal text-[#5f6368] flex-grow box-border m-0">
                 <div className="flex h-full overflow-auto">
                   <div
-                    className="flex flex-col sm:max-w-[540px] sm:rounded-lg sm:max-h-[calc(100vh-96px)] dark:bg-[rgb(32,33,36)]
+                    className="flex flex-col sm:max-w-[540px] sm:rounded-lg sm:max-h-[calc(100vh-0px)] dark:bg-[rgb(32,33,36)]
                   dark:text-[rgb(232,234,237)] box-border overflow-hidden text-[rgb(60,64,67)] relative z-[1] contain-style"
                   >
                     <div className="flex items-center h-14 min-h-[56px] w-full z-[2]">
@@ -172,31 +217,34 @@ function Home() {
                             src={
                               data?.avatar == "" ? "/icon.png" : data?.avatar
                             }
-                            className="rounded-[50%] h-full max-w-[288px] object-fill"
+                            className="rounded-[50%] h-full max-w-[288px] object-cover"
                           />
                         </div>
 
                         <div className="gap-x-2 flex-wrap mt-6">
                           <div className="flex-grow">
                             <div className="inline">
-                              {/* <button
-                                className="py-3 pr-[15px] pl-[11px] border-gray-500 rounded border w-full dark:font-sans dark:text-sm
-                              dark:tracking-wide dark:font-medium dark:normal-case dark:transition dark:duration-300 dark:ease-in-out
-                              dark:shadow-none text-[#1a73e8] hover:bg-slate-800"
-                              >
-                                <RiPencilLine
-                                  className="text-lg h-[18px] ml-0 mr-2 inline-block relative align-top font-sans
-                                font-normal tracking-normal normal-case whitespace-nowrap direction"
-                                />
-                                <span className="relative">Change</span>
-                              </button> */}
                               <input
                                 type="file"
                                 name="image"
                                 accept="image/*"
                                 multiple
                                 className="w-full py-3 pr-[15px] pl-[11px]"
+                                onChange={selectAvatar}
                               />
+
+                              <button
+                                className="py-3 pr-[15px] pl-[11px] border-gray-500 rounded border w-full dark:font-sans dark:text-sm
+                              dark:tracking-wide dark:font-medium dark:normal-case dark:transition dark:duration-300 dark:ease-in-out
+                              dark:shadow-none text-[#1a73e8] hover:bg-slate-800"
+                                onClick={() => changeAvatar(id)}
+                              >
+                                <RiPencilLine
+                                  className="text-lg h-[18px] ml-0 mr-2 inline-block relative align-top font-sans
+                                font-normal tracking-normal normal-case whitespace-nowrap direction"
+                                />
+                                <span className="relative">Change</span>
+                              </button>
                             </div>
                           </div>
                         </div>

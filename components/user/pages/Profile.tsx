@@ -132,13 +132,7 @@ function Profile() {
                           className="will-change relative outline-none overflow-hidden bg-none border-none text-[inherit] m-0 text-left
                            box-border block w-full"
                         >
-                          <div
-                            className="h-full bg-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)] pt-[15px] pb-4 px-4 md:px-6"
-                            aria-haspopup="dialog"
-                            aria-label="change profile picture"
-                            data-rid="218"
-                            data-nav-type="5"
-                          >
+                          <div className="h-full bg-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)] pt-[15px] pb-4 px-4 md:px-6">
                             <div className="flex items-center">
                               <div className="flex-1">
                                 <div className="-mt-1 sm:flex sm:items-stretch ms:flex-wrap">
@@ -166,12 +160,12 @@ function Profile() {
                                   aria-hidden="true"
                                 >
                                   <img
-                                    src="/icon.png"
-                                    alt=""
-                                    className="h-full w-auto"
-                                    aria-hidden="true"
-                                    data-alf="false"
-                                    data-iml="1332.3999999761581"
+                                    src={
+                                      data?.avatar == ""
+                                        ? "/icon.png"
+                                        : data?.avatar
+                                    }
+                                    className="h-full w-auto object-cover"
                                   />
                                 </figure>
                               </div>
@@ -187,7 +181,6 @@ function Profile() {
 
                         <div className="relative outline-none overflow-hidden will-change">
                           <a
-                            href=""
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
                             data-rid="10090"
@@ -230,7 +223,7 @@ function Profile() {
                         </div>
                       </div>
 
-                      <div className="min-h-[1px] hover:bg-gray-50">
+                      {/* <div className="min-h-[1px] hover:bg-gray-50">
                         <div className="pl-4 md:pl-6" role="presentation">
                           <div className="border-t-[1px] border-solid border-[rgb(218,220,224)]"></div>
                         </div>
@@ -278,7 +271,7 @@ function Profile() {
                             </div>
                           </a>
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="min-h-[1px] hover:bg-gray-50">
                         <div className="pl-4 md:pl-6" role="presentation">
@@ -287,7 +280,6 @@ function Profile() {
 
                         <div className="relative outline-none overflow-hidden will-change">
                           <a
-                            href=""
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
                             data-rid="10090"
@@ -307,7 +299,7 @@ function Profile() {
                                   <div className="flex-grow flex-shrink mr-6">
                                     <div className="flex items-center pt-1">
                                       <div className="font-sans font-normal tracking-wide text-sm text-[rgb(32,33,36)] m-0 p-0 w-full">
-                                        Male
+                                        {data?.sex ? "Male" : "Female"}
                                       </div>
                                     </div>
                                   </div>
@@ -365,7 +357,6 @@ function Profile() {
 
                         <div className="relative outline-none overflow-hidden will-change">
                           <a
-                            href=""
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
                             data-rid="10090"
@@ -415,7 +406,6 @@ function Profile() {
 
                         <div className="relative outline-none overflow-hidden will-change">
                           <a
-                            href=""
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
                             data-rid="10090"

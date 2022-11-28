@@ -22,6 +22,7 @@ import { Movie } from "../typings";
 import requests from "../utils/request";
 import { FaPlay } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { BsInfoCircleFill } from "react-icons/bs";
 import {
   Player,
   ControlBar,
@@ -34,6 +35,8 @@ import {
 import "node_modules/video-react/dist/video-react.css";
 import { SearchIcon } from "@heroicons/react/solid";
 import { render } from "react-dom";
+import { Rating } from "@mui/material";
+import { UserEntity } from "../models/UserEntity";
 
 interface Props {
   netflixOriginals: Movie[];
@@ -58,6 +61,7 @@ const Home = ({
 }: Props) => {
   const [showModal, setShowModal] = useState(true);
   const [isModal, setIsModal] = useState(true);
+  const [alert, setAlert] = useState(true);
   const [isOpenMovie, setIsOpenMovie] = useState(true);
   const [premium, setPremium] = useState(true);
   // const movie = useRecoilValue(movieState);
@@ -66,8 +70,13 @@ const Home = ({
   const [dataSearch, setDataSearch] = useState<FilmEntity[]>([]);
   const [movie, setMovie] = useState<FilmEntity>();
   const [keywords, setKeywords] = useState("");
+  const [user, setUser] = useState<UserEntity>();
   const [genresFilm, setGenresFilm] = useState<GenreFilmEntity[]>([]);
   const [castFilm, setCastFilm] = useState<PersonFilmEntity[]>([]);
+
+  movie?.genres.map((value) => {
+    console.log(value.genre.name);
+  });
 
   useEffect(() => {
     if (
@@ -80,23 +89,21 @@ const Home = ({
     }
   }, []);
 
-  //   const getMovie = async () => {
-  //     const jwtString = await sessionStorage.getItem("token");
-  //     axios
-  //       .get<FilmEntity>(`${baseUrl}/api/films/${route.params.filmId}`, {
-  //         headers: { Authorization: `Bearer ${jwtString}` },
-  //       })
-  //       .then((res) => {
-  //         setMovie(res.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   };
-
-  //   useEffect(() => {
-  //     getMovie();
-  //   }, []);
+  const getUser = async () => {
+    const jwtString = await sessionStorage.getItem("token");
+    axios
+      .get<UserEntity>(`${baseUrl}/api/users/profile`, {
+        headers: { Authorization: `Bearer ${jwtString}` },
+      })
+      .then((res) => {
+        setUser(res.data);
+        //console.log(data);
+        console.log(res.data.premium);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const getFilms = async () => {
     const jwtString = sessionStorage.getItem("token");
@@ -115,6 +122,7 @@ const Home = ({
 
   useEffect(() => {
     getFilms();
+    getUser();
   }, []);
 
   const getFilmById = async (id: string) => {
@@ -125,6 +133,7 @@ const Home = ({
       })
       .then((res) => {
         setMovie(res.data);
+        localStorage.setItem("film", res.data.id);
         //console.log(res.data);
       })
       .catch((err) => {
@@ -178,7 +187,8 @@ const Home = ({
               <img
                 src={movie.mobileUrl}
                 key={movie.id}
-                className="transition ease-in-out duration-150 w-full h-64 bg-transparent object-fill md:h-96 hover:object-cover"
+                className="transition ease-in-out duration-150 w-full h-64 bg-transparent object-fill md:h-96 hover:object-cover 
+                hover:opacity-75"
               />
             </>
             <div className="flex flex-col mx-3 my-2 w-full">
@@ -230,7 +240,8 @@ const Home = ({
               <img
                 src={movie.mobileUrl}
                 key={movie.id}
-                className="transition ease-in-out duration-150 w-full h-64 bg-transparent object-fill md:h-96 hover:object-cover"
+                className="transition ease-in-out duration-150 w-full h-64 bg-transparent object-fill md:h-96 hover:object-cover 
+                hover:opacity-75"
               />
             </>
 
@@ -273,27 +284,6 @@ const Home = ({
       />
 
       <div
-        className="z-[100] fixed flex flex-row items-center space-x-4 text-sm font-light right-[71.9px] top-[19.5px] lg:top-[25.5px] 
-      lg:right-24 md:hidden lg:flex"
-      >
-        <input
-          type="text"
-          className="md:w-96 w-40 focus:outline-none border-b-[1px] border-gray-400 h-10 gap-4 px-4 text-white font-semibold 
-            bg-transparent"
-          placeholder="Enter keyword to search"
-          onChange={(e) => handleKeyWordChange(e.target.value)}
-        />
-
-        <div
-          title="Search"
-          className="p-2 rounded-full hover:bg-gray-800 active:bg-gray-500 cursor-pointer"
-          onClick={() => handleSearches(keywords)}
-        >
-          <SearchIcon className="h-6 w-6 sm:inline" />
-        </div>
-      </div>
-
-      <div
         className={`${
           isOpenMovie ? "block" : "hidden"
         } relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]`}
@@ -303,6 +293,41 @@ const Home = ({
           <div className="mb-[130px]"></div>
           <Slider />
           <Brands />
+
+          <div className="z-[100] flex flex-col items-center justify-center space-x-4 mt-10 md:mt-0">
+            <h1 className="text-4xl text-yellow-400 mb-2">Codeflix World</h1>
+            <p className="text-2xl italic mb-[30px] !ml-0">
+              "What keywords make you happy?
+              <br />
+              Which movie inspired you?"
+            </p>
+
+            <div className="flex flex-row text-sm font-light">
+              <input
+                type="text"
+                className="md:w-[600px] w-[320px] focus:outline-yellow-400 border rounded border-yellow-300 h-10 gap-4 px-4 
+              text-white font-semibold bg-transparent text-center mr-2"
+                placeholder="Enter keyword to search"
+                onChange={(e) => handleKeyWordChange(e.target.value)}
+              />
+
+              <div
+                title="Search"
+                className="hidden p-2 rounded-full hover:bg-gray-800 active:bg-gray-500 cursor-pointer md:block"
+                onClick={() => handleSearches(keywords)}
+              >
+                <SearchIcon className="h-6 w-6 sm:inline" />
+              </div>
+            </div>
+
+            <button
+              title="Search"
+              className="md:hidden p-4 rounded-xl bg-red-600 mt-4 hover:opacity-75"
+              onClick={() => handleSearches(keywords)}
+            >
+              Search
+            </button>
+          </div>
 
           <section className="mt-10 lg:mt-0 md:space-y-24">
             <h1
@@ -334,10 +359,10 @@ const Home = ({
       <div
         className={`${isModal ? "hidden" : "block"} ${
           isOpenMovie ? "block" : "hidden"
-        } fixed top-0 left-0 right-0 z-50 mx-auto w-full h-screen overflow-hidden
+        } fixed top-0 left-0 right-0 z-[200] mx-auto w-full h-screen overflow-hidden
         overflow-y-scroll !scrollbar-hide shadow-lg bg-[rgba(0,0,0,0.4)] border-2 border-black`}
       >
-        <div className="flex flex-row-reverse mt-32 mx-10 md:mt-48 md:mx-auto md:max-w-5xl rounded-md bg-[#121212]">
+        <div className="flex flex-row-reverse md:mt-24 md:mx-auto md:max-w-5xl rounded-md bg-[#121212]">
           <AiFillCloseCircle
             className="mr-4 mt-2 opacity-5 text-5xl left-0 hover:opacity-20 cursor-pointer"
             onClick={() => setIsModal(!isModal)}
@@ -352,9 +377,16 @@ const Home = ({
                 {movie?.name}
               </h2>
 
+              <Rating
+                name="rating"
+                value={4}
+                disabled
+                className="mt-5 font-semibold"
+              />
+
               <span className="mt-5 font-semibold">
-                Description:{" "}
-                <span className="mt-5 break-all text-gray-300 text-sm font-normal">
+                Intro:{" "}
+                <span className="mt-5 text-gray-300 text-sm font-normal">
                   {movie?.describe}
                 </span>
               </span>
@@ -384,8 +416,11 @@ const Home = ({
 
               <>
                 <span className="mt-5 font-semibold">Cast:</span>
-                {movie?.persons.map((value) => {
-                  <span className="mt-5 text-gray-300 font-normal text-sm">
+                {movie?.persons.map((value, key) => {
+                  <span
+                    key={key}
+                    className="mt-5 text-gray-300 font-normal text-sm"
+                  >
                     {" "}
                     {value.person.name}
                   </span>;
@@ -400,18 +435,56 @@ const Home = ({
                   </span>
                 </span>
               </>
-
               <div
-                className="flex mt-5 bg-yellow-500 px-5 py-4 rounded w-max cursor-pointer 
+                className="flex mt-5 bg-yellow-500 px-5 py-4 rounded-lg w-max cursor-pointer 
                 justify-center items-center hover:opacity-80"
                 onClick={() => {
-                  setIsOpenMovie(!isOpenMovie);
+                  if (movie?.premium == false) {
+                    setIsOpenMovie(!isOpenMovie);
+                  } else {
+                    user?.premium
+                      ? setIsOpenMovie(!isOpenMovie)
+                      : setAlert(!alert);
+                  }
                 }}
               >
                 <FaPlay />
                 <p className="ml-2 font-semibold text-white">Play</p>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Alert */}
+      <div
+        className={`${
+          alert ? "hidden" : "block"
+        } fixed top-0 left-0 right-0 z-[200] mx-auto w-full h-screen overflow-hidden
+      overflow-y-scroll !scrollbar-hide shadow-lg bg-[rgba(0,0,0,0.4)] border-2 border-black`}
+      >
+        <div className="flex flex-row-reverse md:mt-64 md:mx-auto md:max-w-2xl rounded-md bg-slate-100">
+          <AiFillCloseCircle
+            className="mr-4 mt-2 text-5xl left-0 hover:opacity-50 text-black opacity-60 cursor-pointer"
+            onClick={() => setAlert(!alert)}
+          />
+
+          <div className="flex flex-col justify-center items-center my-10 mx-4 container md:mx-10 text-black">
+            <h1 className="text-4xl font-medium">Notification</h1>
+            <span className="text-base mt-4 font-normal">
+              You do not have sufficient permissions to perform this function.
+              <br />
+              Please upgrade your account for unlimited service.
+              <br />
+              Become a member to use many of Codeflix's services by visiting the
+              link:{" "}
+              <a
+                href="/account/upgrade"
+                className="text-blue-700 hover:text-blue-500"
+              >
+                Click here
+              </a>
+            </span>
           </div>
         </div>
       </div>

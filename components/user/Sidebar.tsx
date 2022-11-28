@@ -79,6 +79,9 @@ function Sidebar() {
             id="sidebarListItem"
             title="Help"
             className="flex items-center rounded-lg pl-6 py-3 pr-4 hover:bg-[#e5e7eb]"
+            onClick={() => {
+              router.push("/account/help");
+            }}
           >
             <BiHelpCircle className="text-2xl" />
             <h3 className="ml-4">Help</h3>

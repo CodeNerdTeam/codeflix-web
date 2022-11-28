@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { baseUrl } from "../constants/api";
 import { FilmEntity } from "../models/FilmEntity";
+import { UserEntity } from "../models/UserEntity";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,6 +26,7 @@ export function Header() {
   const router = useRouter();
   const [keywords, setKeywords] = useState("");
   const [dataFilms, setDataFilms] = useState<FilmEntity[]>([]);
+  const [data, setData] = useState<UserEntity>();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,6 +117,27 @@ export function Header() {
       });
   };
 
+  const getUser = async () => {
+    const jwtString = await sessionStorage.getItem("token");
+    axios
+      .get<UserEntity>(`${baseUrl}/api/users/profile`, {
+        headers: { Authorization: `Bearer ${jwtString}` },
+      })
+      .then((res) => {
+        setData(res.data);
+        localStorage.setItem("id", res.data.id);
+        localStorage.setItem("avatar", res.data.avatar);
+        //console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <>
       <Box
@@ -186,8 +209,8 @@ export function Header() {
           </div> */}
 
           <img
-            src="/icon.png"
-            className="h-10 w-10 cursor-pointer rounded"
+            src={data?.avatar == "" ? "/icon.png" : data?.avatar}
+            className="h-10 w-10 cursor-pointer rounded object-cover"
             onClick={() => {
               setIsOpenOptions(!isOpenOptions);
             }}
@@ -301,6 +324,7 @@ export function Header() {
           onClick={() => setIsOpenDrawer(!isOpenDrawer)}
         ></div>
       </div>
+
       {/* options menu */}
       <div
         className={`${
