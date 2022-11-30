@@ -24,8 +24,8 @@ function Home() {
       })
       .then((res) => {
         setData(res.data);
-        localStorage.setItem("id", res.data.id);
-        localStorage.setItem("avatar", res.data.avatar);
+        //localStorage.setItem("id", res.data.id);
+        //localStorage.setItem("avatar", res.data.avatar);
         //console.log(data);
       })
       .catch((error) => {
@@ -44,9 +44,9 @@ function Home() {
     console.log(selected);
   };
 
-  const id = sessionStorage.getItem("id");
+  //const id = sessionStorage.getItem("id");
 
-  const changeAvatar = async (id: string | null) => {
+  const changeAvatar = async (id: string) => {
     const jwtString = await sessionStorage.getItem("token");
     if (avatar == null) {
       return;
@@ -54,7 +54,7 @@ function Home() {
       const avatarRef = ref(storage, `avatars/${v4()}`);
       uploadBytes(avatarRef, avatar).then(() => {
         getDownloadURL(avatarRef).then((url) => {
-          //deleteObjectFirebase()
+          deleteObjectFirebase(data?.avatar);
           axios
             .put(
               `${baseUrl}/api/users/avt/${id}`,
@@ -64,10 +64,12 @@ function Home() {
               }
             )
             .then(() => {
-              alert("Y");
+              alert("Change avatar successfully!");
+              // window.location.reload();
+              getUser();
             })
             .catch((error) => {
-              alert("N");
+              alert("Change avatar failed!");
               console.log(error);
             });
         });
@@ -88,11 +90,18 @@ function Home() {
                   box-border overflow-hidden relative w-auto p-0 bg-none"
                   onClick={() => setOpenAvatar(!openAvatar)}
                 >
-                  <figure className="flex items-center justify-center overflow-hidden m-0 p-0 w-24 h-24 rounded-[50%]">
+                  <figure className="flex items-center justify-center overflow-hidden m-0 p-0 w-24 h-24 rounded-[50%] relative">
+                    {data?.premium ? (
+                      <img
+                        src="/circle7mau.png"
+                        className="max-w-full align-middle absolute"
+                      />
+                    ) : (
+                      ""
+                    )}
                     <img
                       src={data?.avatar == "" ? "/icon.png" : data?.avatar}
-                      alt=""
-                      className="h-full w-auto border-none object-cover"
+                      className="h-full w-auto border-none"
                     />
                   </figure>
 
@@ -212,12 +221,23 @@ function Home() {
                           />
                         </div>
 
-                        <div className="flex h-[min(100vw-38px,288px)] top-0 justify-center m-auto min-h-[96px] min-w-[96px] w-[min(100vw-38px,288px)]">
+                        <div
+                          className="flex h-[min(100vw-38px,288px)] top-0 justify-center m-auto min-h-[96px] min-w-[96px] w-[min(100vw-38px,288px)]
+                          relative"
+                        >
+                          {data?.premium ? (
+                            <img
+                              src="/circle7mau.png"
+                              className="w-full h-full align-middle absolute"
+                            />
+                          ) : (
+                            ""
+                          )}
                           <img
                             src={
                               data?.avatar == "" ? "/icon.png" : data?.avatar
                             }
-                            className="rounded-[50%] h-full max-w-[288px] object-cover"
+                            className="rounded-[50%] h-[95%] mt-2 max-w-[266px] w-auto object-cover"
                           />
                         </div>
 
@@ -237,7 +257,7 @@ function Home() {
                                 className="py-3 pr-[15px] pl-[11px] border-gray-500 rounded border w-full dark:font-sans dark:text-sm
                               dark:tracking-wide dark:font-medium dark:normal-case dark:transition dark:duration-300 dark:ease-in-out
                               dark:shadow-none text-[#1a73e8] hover:bg-slate-800"
-                                onClick={() => changeAvatar(id)}
+                                onClick={() => changeAvatar(data!.id)}
                               >
                                 <RiPencilLine
                                   className="text-lg h-[18px] ml-0 mr-2 inline-block relative align-top font-sans

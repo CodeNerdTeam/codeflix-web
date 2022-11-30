@@ -125,8 +125,8 @@ export function Header() {
       })
       .then((res) => {
         setData(res.data);
-        localStorage.setItem("id", res.data.id);
-        localStorage.setItem("avatar", res.data.avatar);
+        //localStorage.setItem("id", res.data.id);
+        //localStorage.setItem("avatar", res.data.avatar);
         //console.log(data);
       })
       .catch((error) => {
@@ -208,13 +208,24 @@ export function Header() {
             <SearchIcon className="h-6 w-6 sm:inline" />
           </div> */}
 
-          <img
-            src={data?.avatar == "" ? "/icon.png" : data?.avatar}
-            className="h-10 w-10 cursor-pointer rounded object-cover"
-            onClick={() => {
-              setIsOpenOptions(!isOpenOptions);
-            }}
-          />
+          <div className="cursor-pointer flex items-center justify-center box-border relative shadow h-[51px] w-[51px]">
+            {data?.premium ? (
+              <img
+                src="/fireballframe.png"
+                className="max-w-full align-middle absolute"
+              />
+            ) : (
+              ""
+            )}
+
+            <img
+              src={data?.avatar == "" ? "/icon.png" : data?.avatar}
+              className="h-10 w-10 rounded-sm absolute"
+              onClick={() => {
+                setIsOpenOptions(!isOpenOptions);
+              }}
+            />
+          </div>
         </div>
       </header>
 

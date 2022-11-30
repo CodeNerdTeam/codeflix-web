@@ -99,6 +99,8 @@ function register() {
         ConfirmPassword: confirmPassword,
         PasswordOld: "",
         Avatar: "",
+        Premium: false,
+        Sex: false,
         Current: "",
         Role: "User",
       };

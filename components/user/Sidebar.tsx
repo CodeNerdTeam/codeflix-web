@@ -1,10 +1,10 @@
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaBuyNLarge } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
-import { CgPassword } from "react-icons/cg";
 import { MdPayment } from "react-icons/md";
-import { GiUpgrade } from "react-icons/gi";
 import { BiHelpCircle } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { GrGoogleWallet } from "react-icons/gr";
+import { Si1Password } from "react-icons/si";
 
 function Sidebar() {
   const router = useRouter();
@@ -45,8 +45,20 @@ function Sidebar() {
               router.push("/account/change-password");
             }}
           >
-            <CgPassword className="text-2xl" />
+            <Si1Password className="text-2xl" />
             <h3 className="ml-4">Change password</h3>
+          </div>
+
+          <div
+            id="sidebarListItem"
+            title="Wallet"
+            className="flex items-center rounded-lg pl-6 py-3 pr-4 hover:bg-[#e5e7eb]"
+            onClick={() => {
+              router.push("/account/wallet");
+            }}
+          >
+            <GrGoogleWallet className="text-2xl" />
+            <h3 className="ml-4">Codeflix wallet</h3>
           </div>
 
           <div
@@ -69,7 +81,7 @@ function Sidebar() {
               router.push("/account/upgrade");
             }}
           >
-            <GiUpgrade className="text-2xl" />
+            <FaBuyNLarge className="text-2xl" />
             <h3 className="ml-4">Buy package</h3>
           </div>
 

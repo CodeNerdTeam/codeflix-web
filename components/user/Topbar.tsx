@@ -3,13 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BiHelpCircle } from "react-icons/bi";
-import { CgPassword } from "react-icons/cg";
-import { FaUserCircle } from "react-icons/fa";
+import { FaBuyNLarge, FaUserCircle } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
-import { GiUpgrade } from "react-icons/gi";
+import { GrGoogleWallet } from "react-icons/gr";
 import { ImProfile } from "react-icons/im";
 import { IoCloseOutline } from "react-icons/io5";
 import { MdOutlineLogout, MdPayment } from "react-icons/md";
+import { Si1Password } from "react-icons/si";
 import { baseUrl } from "../../constants/api";
 
 export default function Topbar() {
@@ -157,12 +157,29 @@ export default function Topbar() {
                     router.push("/account/change-password");
                   }}
                 >
-                  <CgPassword
+                  <Si1Password
                     className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-600 group-hover:text-gray-900
                 dark:group-hover:text-white"
                   />
                   <span className="ml-3">Change password</span>
                 </a>
+              </li>
+
+              <li>
+                <div
+                  title="Payment and subscription package"
+                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-black hover:bg-gray-100
+                dark:hover:bg-gray-200 cursor-pointer"
+                  onClick={() => {
+                    router.push("/account/wallet");
+                  }}
+                >
+                  <GrGoogleWallet
+                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-600 group-hover:text-gray-900
+                dark:group-hover:text-white"
+                  />
+                  <span className="ml-3">Codeflix wallet</span>
+                </div>
               </li>
 
               <li>
@@ -191,7 +208,7 @@ export default function Topbar() {
                     router.push("/account/upgrade");
                   }}
                 >
-                  <GiUpgrade
+                  <FaBuyNLarge
                     className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-600 group-hover:text-gray-900
                 dark:group-hover:text-white"
                   />
@@ -206,6 +223,9 @@ export default function Topbar() {
                   title="Help"
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-black hover:bg-gray-100
                 dark:hover:bg-gray-200 cursor-pointer"
+                  onClick={() => {
+                    router.push("/account/help");
+                  }}
                 >
                   <BiHelpCircle
                     className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-600 group-hover:text-gray-900

@@ -1,5 +1,6 @@
 import { HistoryEntity } from "./HistoryEntity";
 import { PlayListEntity } from "./PlayListEntity";
+import { WalletEntity } from "./WalletEntity";
 
 export interface UserEntity {
   id: string;
@@ -13,4 +14,5 @@ export interface UserEntity {
   sex: boolean;
   role: string;
   premium: boolean;
+  wallet: WalletEntity;
 }

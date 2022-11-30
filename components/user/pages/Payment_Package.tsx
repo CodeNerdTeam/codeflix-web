@@ -1,6 +1,6 @@
 function Payment_Package() {
   return (
-    <div className="mx-3 max-w-[840px] mt-16 p-2 lg:p-12 lg:max-w-[1120px] lg:mt-0 lg:-ml-[30px] md:p-6 sm:p-4">
+    <div className="mx-3 max-w-[840px] mt-16 p-2 lg:p-12 lg:max-w-[1120px] lg:-ml-[30px] md:p-6 sm:p-4">
       <div className="lg:m-w-[840px]">
         <div className="pt-6" tabIndex={-1}>
           <h1 className="lg:block hidden font-sans text-3xl tracking-normal font-medium text-[rgb(32,33,36)] mt-0 mx-0 mb-2 p-0 text-center">

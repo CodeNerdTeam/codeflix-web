@@ -47,7 +47,7 @@ function payment_method() {
                   <span className="text-[#5f6368] text-2xl not-italic font-normal tracking-normal non-text-decoration inline-block direction">
                     <HiOutlineArrowLeft
                       onClick={() => {
-                        router.push("/account/payment/payment_package");
+                        router.push("/account/payment/payment-package");
                       }}
                     />
                   </span>

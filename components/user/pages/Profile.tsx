@@ -27,7 +27,7 @@ function Profile() {
   }, []);
 
   return (
-    <div className="text-[#555] h-full mx-3 max-w-[840px] p-2 lg:p-12 lg:max-w-[1120px] md:p-6 sm:p-4">
+    <div className="text-[#555] h-max mx-3 mt-16 max-w-[840px] p-2 lg:p-12 lg:max-w-[1120px] md:p-6 sm:p-4">
       <div className="lg:max-w-[840px]">
         <div className="flex items-center justify-center">
           <div className="relative">
@@ -165,7 +165,7 @@ function Profile() {
                                         ? "/icon.png"
                                         : data?.avatar
                                     }
-                                    className="h-full w-auto object-cover"
+                                    className="h-full w-auto"
                                   />
                                 </figure>
                               </div>
@@ -317,6 +317,55 @@ function Profile() {
                                   />
                                 </figure>
                               </div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+
+                      <div className="min-h-[1px] hover:bg-gray-50">
+                        <div className="pl-4 md:pl-6" role="presentation">
+                          <div className="border-t-[1px] border-solid border-[rgb(218,220,224)]"></div>
+                        </div>
+
+                        <div className="relative outline-none overflow-hidden will-change">
+                          <a
+                            className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
+                             pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
+                            data-rid="10090"
+                            data-nav-type="5"
+                          >
+                            <div className="flex items-center" role="text">
+                              <div className="flex-1">
+                                <div className="-mt-1 sm:flex sm:items-stretch sm:flex-wrap">
+                                  <div className="flex items-center basis-[156px] mr-6 pt-1">
+                                    <div className="flex items-center pt-1">
+                                      <h3 className="font-sans text-xs font-medium normal-case text-[rgb(95,99,104)] m-0 p-0 w-full">
+                                        Join date
+                                      </h3>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex-grow flex-shrink mr-6">
+                                    <div className="flex items-center pt-1">
+                                      <div className="font-sans font-normal tracking-wide text-sm text-[rgb(32,33,36)] m-0 p-0 w-full">
+                                        {data?.created.toString()}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* <div className="flex-grow-0 flex-shrink-0 ml-4">
+                                <figure
+                                  className="flex items-center justify-center h-6 m-0 p-0 w-6 left-0"
+                                  aria-hidden="true"
+                                >
+                                  <MdOutlineArrowForwardIos
+                                    className="text-[rgb(95,99,104)] text-[24px] font-normal"
+                                    aria-hidden="true"
+                                  />
+                                </figure>
+                              </div> */}
                             </div>
                           </a>
                         </div>

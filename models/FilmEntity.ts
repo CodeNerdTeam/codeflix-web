@@ -1,3 +1,4 @@
+import { RatingEntity } from "./RatingEntity";
 import { GenreFilmEntity } from "./GenreFilmEntity ";
 import { PersonFilmEntity } from "./PersonFilmEntity ";
 import { ProducerEntity } from "./ProducerEntity ";
@@ -16,6 +17,7 @@ export interface FilmEntity {
   webUrl: string;
   videoUrl: string;
   created: Date;
+  ratings: RatingEntity[];
   genres: GenreFilmEntity[];
   persons: PersonFilmEntity[];
 }

@@ -1,9 +1,11 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { baseUrl } from "../../../constants/api";
 import { UserEntity } from "../../../models/UserEntity";
 
 function ChangePassword() {
+  const router = useRouter();
   const [passwordOld, setPasswordOld] = useState("");
   const [passwordNew, setPasswordNew] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,7 +20,7 @@ function ChangePassword() {
       })
       .then((res) => {
         setData(res.data);
-        localStorage.setItem("id", res.data.id);
+        // localStorage.setItem("id", res.data.id);
         //console.log(data);
       })
       .catch((error) => {
@@ -40,11 +42,9 @@ function ChangePassword() {
     setConfirmPassword(value);
   };
 
-  const id = localStorage.getItem("id");
+  // const id = localStorage.getItem("id");
 
-  console.log(id);
-
-  const changePassword = (id: String | null) => {
+  const changePassword = (id: String) => {
     if (
       passwordOld.length !== 0 ||
       passwordNew.length !== 0 ||
@@ -67,6 +67,7 @@ function ChangePassword() {
             return alert("Change password failed!");
           }
           alert("Change password successfully!");
+          router.push("/account/home");
         })
         .catch((err) => {
           console.log(err);
@@ -141,8 +142,9 @@ function ChangePassword() {
                         <div className="box-inherit rounded-[10px] h-[20px] mr-2">
                           <div className="box-inherit rounded-[50%] text-[#5f6368] overflow-hidden">
                             <img
-                              src="/icon.png"
-                              alt=""
+                              src={
+                                data?.avatar == "" ? "/icon.png" : data?.avatar
+                              }
                               className="rounded-[50%] block text-[#3c4043] h-[20px] w-[20px] box-inherit"
                             />
                           </div>
@@ -351,7 +353,7 @@ function ChangePassword() {
                                 shadow-none transition h-9 rounded no-underline my-[6px] relative items-center justify-center min-w-[64px] 
                                 border-none outline-none overflow-visible align-middle hover:bg-opacity-80"
                                 onClick={() => {
-                                  changePassword(id);
+                                  changePassword(data!.id);
                                 }}
                               >
                                 <span>Submit</span>

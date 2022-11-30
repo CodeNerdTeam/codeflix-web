@@ -17,6 +17,7 @@ function upgrade() {
   const [data, setData] = useState<PackageEntity[]>([]);
   const [goi, setGoi] = useState<PackageEntity>();
   const [user, setUser] = useState<UserEntity>();
+  const [choosePack, setChoosePack] = useState("");
 
   useEffect(() => {
     if (sessionStorage.getItem("token") != null) {
@@ -98,6 +99,28 @@ function upgrade() {
       });
   };
 
+  const payment = async () => {
+    const jwtString = await sessionStorage.getItem("token");
+    axios
+      .post(
+        `${baseUrl}/api/users/payment`,
+        {
+          packageId: choosePack,
+          status: true,
+        },
+        {
+          headers: { Authorization: `Bearer ${jwtString}` },
+        }
+      )
+      .then(() => {
+        alert("Successfully");
+      })
+      .catch((err) => {
+        alert("You don't have enough money to purchase");
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Head>
@@ -109,8 +132,8 @@ function upgrade() {
       <div className="min-h-[139px]">
         <div className="bg-white">
           <div className="pt-6 w-full px-[15px] mx-auto xl:max-w-[1180px] lg:max-w-[960px] md:max-w-[720px] sm:max-w-[540px]">
-            <h3 className="font-sans text-left text-2xl font-extrabold mb-6 text-black">
-              Payment
+            <h3 className="font-sans text-left text-2xl font-extrabold mb-6 text-black mt-16">
+              Purchase membership package
             </h3>
 
             <div className="flex flex-wrap -mx-[15px]">
@@ -137,6 +160,7 @@ function upgrade() {
                                   label=""
                                   onClick={() => {
                                     getPackageById(value.id);
+                                    setChoosePack(value.id);
                                   }}
                                 />
                                 {value.name}
@@ -144,7 +168,7 @@ function upgrade() {
 
                               <div className="absolute right-5 top-1/2 -translate-y-1/2">
                                 <span className="text-center ml-auto text-base font-medium font-sans text-black">
-                                  {value.price} VND
+                                  {value.price} ZEN
                                 </span>
                               </div>
                             </div>
@@ -164,7 +188,7 @@ function upgrade() {
 
                         <div className="absolute right-5 top-1/2 -translate-y-1/2">
                           <span className="text-center ml-auto text-base font-medium font-sans text-black">
-                            396.000 VND
+                            396.000 ZEN
                           </span>
                         </div>
                       </div>
@@ -187,7 +211,7 @@ function upgrade() {
 
                         <div className="absolute right-5 top-1/2 -translate-y-1/2">
                           <span className="text-center ml-auto text-base font-medium font-sans text-black">
-                            792.000 VND
+                            792.000 ZEN
                           </span>
                         </div>
                       </div> */}
@@ -224,8 +248,8 @@ function upgrade() {
                             </h5>
 
                             <p className="text-xs text-black font-normal font-sans text-left mt-[6px] tracking-wider m-0">
-                              Discount 100.000 VND when buying MAX/VIP package
-                              for 6 months and a 40.000 VND discount when buying
+                              Discount 100.000 ZEN when buying MAX/VIP package
+                              for 6 months and a 40.000 ZEN discount when buying
                               a package with a Vietcombank International card.
                               Apply to the first 300 accounts.
                             </p>
@@ -258,7 +282,7 @@ function upgrade() {
                             </h5>
 
                             <p className="text-xs text-black font-normal font-sans text-left mt-[6px] tracking-wider m-0">
-                              50.000 VND refund (single from 66.000 VND) for
+                              50.000 ZEN refund (single from 66.000 ZEN) for
                               ZaloPay account for the first time linking payment
                               to buy service packages on Codeflix.
                             </p>
@@ -448,7 +472,7 @@ function upgrade() {
                             Package price:
                           </td>
                           <td className="text-right text-black pb-4 font-medium font-sans text-sm">
-                            {goi?.price} VND
+                            {goi?.price} ZEN
                           </td>
                         </tr>
                         {/* Service pack type */}
@@ -475,7 +499,7 @@ function upgrade() {
                           </td>
                           <td className="text-right text-black font-medium font-sans text-sm">
                             <span className="text-[#ff6500]">
-                              {goi?.price} VND
+                              {goi?.price} ZEN
                             </span>
                           </td>
                         </tr>
@@ -521,6 +545,7 @@ function upgrade() {
                       typeof="button"
                       className="text-[#fff] text-base font-sans font-semibold rounded-3xl px-12 py-2 border-[#ff6500] bg-[#ff6500]
                         transition-none inline-block text-center align-middle select-none border-1 border-solid hover:opacity-80"
+                      onClick={payment}
                     >
                       Payment
                     </button>
