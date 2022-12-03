@@ -5,7 +5,7 @@ import { WalletEntity } from "./WalletEntity";
 export interface UserEntity {
   id: string;
   created: Date;
-  playlists: PlayListEntity[];
+  playLists: PlayListEntity[];
   histories: HistoryEntity[];
   name: string;
   phone: string;

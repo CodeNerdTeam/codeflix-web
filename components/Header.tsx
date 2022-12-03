@@ -1,5 +1,4 @@
 import { SearchIcon } from "@heroicons/react/solid";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
@@ -110,7 +109,7 @@ export function Header() {
       })
       .then((res) => {
         setDataFilms(res.data);
-        console.log(res.data);
+        //console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -188,7 +187,17 @@ export function Header() {
             <li className="headerLink">TV Shows</li>
             <li className="headerLink">Movies</li>
             <li className="headerLink">New & Popular</li>
-            <li className="headerLink">My List</li>
+            <li className="headerLink">
+              <div
+                title="My list"
+                onClick={() => {
+                  router.push("/playlist");
+                }}
+              >
+                My list
+              </div>
+            </li>
+            <li className="headerLink">History</li>
           </ul>
         </div>
         <div className="flex items-center space-x-4 text-sm font-light">
@@ -209,15 +218,6 @@ export function Header() {
           </div> */}
 
           <div className="cursor-pointer flex items-center justify-center box-border relative shadow h-[51px] w-[51px]">
-            {data?.premium ? (
-              <img
-                src="/fireballframe.png"
-                className="max-w-full align-middle absolute"
-              />
-            ) : (
-              ""
-            )}
-
             <img
               src={data?.avatar == "" ? "/icon.png" : data?.avatar}
               className="h-10 w-10 rounded-sm absolute"
@@ -225,6 +225,18 @@ export function Header() {
                 setIsOpenOptions(!isOpenOptions);
               }}
             />
+
+            {data?.premium ? (
+              <img
+                src="/fireballframe.png"
+                className="max-w-full align-middle absolutes z-10"
+                onClick={() => {
+                  setIsOpenOptions(!isOpenOptions);
+                }}
+              />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </header>
@@ -316,12 +328,28 @@ export function Header() {
                 <div
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100
                 dark:hover:bg-gray-700 cursor-pointer"
+                  onClick={() => {
+                    router.push("/playlist");
+                  }}
                 >
                   <BiBookHeart
                     className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900
                 dark:group-hover:text-white"
                   />
                   <span className="ml-3">My List</span>
+                </div>
+              </li>
+
+              <li>
+                <div
+                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100
+                dark:hover:bg-gray-700 cursor-pointer"
+                >
+                  <BiBookHeart
+                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900
+                dark:group-hover:text-white"
+                  />
+                  <span className="ml-3">History</span>
                 </div>
               </li>
             </ul>

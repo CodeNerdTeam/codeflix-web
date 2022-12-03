@@ -2,6 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { AiFillHome } from "react-icons/ai";
 import { BiHelpCircle } from "react-icons/bi";
 import { FaBuyNLarge, FaUserCircle } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
@@ -236,6 +237,23 @@ export default function Topbar() {
               </li>
 
               <div className="border-t border-solid border-[rgb(218,220,224)] box-border h-2 mt-2"></div>
+
+              <li>
+                <div
+                  title="Help"
+                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-black hover:bg-gray-100
+                dark:hover:bg-gray-200 cursor-pointer"
+                  onClick={() => {
+                    router.push("/home");
+                  }}
+                >
+                  <AiFillHome
+                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-600 group-hover:text-gray-900
+                dark:group-hover:text-white"
+                  />
+                  <span className="ml-3">Back</span>
+                </div>
+              </li>
 
               <li>
                 <div

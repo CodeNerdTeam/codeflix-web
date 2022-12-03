@@ -5,6 +5,7 @@ import { BiHelpCircle } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { GrGoogleWallet } from "react-icons/gr";
 import { Si1Password } from "react-icons/si";
+import { AiFillHome } from "react-icons/ai";
 
 function Sidebar() {
   const router = useRouter();
@@ -97,6 +98,20 @@ function Sidebar() {
           >
             <BiHelpCircle className="text-2xl" />
             <h3 className="ml-4">Help</h3>
+          </div>
+
+          <div className="border-t border-solid border-[rgb(218,220,224)] box-border h-2 mt-2"></div>
+
+          <div
+            id="sidebarListItem"
+            title="Help"
+            className="flex items-center rounded-lg pl-6 py-3 pr-4 hover:bg-[#e5e7eb]"
+            onClick={() => {
+              router.push("/home");
+            }}
+          >
+            <AiFillHome className="text-2xl" />
+            <h3 className="ml-4">Back</h3>
           </div>
         </div>
       </div>

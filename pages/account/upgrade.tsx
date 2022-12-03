@@ -114,9 +114,13 @@ function upgrade() {
       )
       .then(() => {
         alert("Successfully");
+        window.location.reload();
       })
       .catch((err) => {
-        alert("You don't have enough money to purchase");
+        alert(
+          "You don't have enough ZEN to purchase or You are already a member of Codeflix, " +
+            "you cannot buy any more packages before the expiry date of the package you already own!"
+        );
         console.log(err);
       });
   };
@@ -220,7 +224,7 @@ function upgrade() {
                 </div>
 
                 {/* Forms of payment */}
-                <div className="bg-[#fcfbfb] rounded-xl shadow-[0px_4px_4px_rgb(0_0_0_/_25%)] py-5 px-7 mb-6">
+                {/* <div className="bg-[#fcfbfb] rounded-xl shadow-[0px_4px_4px_rgb(0_0_0_/_25%)] py-5 px-7 mb-6">
                   <h4 className="text-lg font-extrabold mb-2 font-sans text-black text-left">
                     Choose a form of payment
                   </h4>
@@ -231,7 +235,6 @@ function upgrade() {
                       defaultValue="visa"
                       name="radio-buttons-group"
                     >
-                      {/* Visa */}
                       <div className="bg-[#f4eeee] relative block rounded-xl mb-4">
                         <div className="w-[50px] h-[50px] rounded-[10px] overflow-hidden absolute left-[11px] top-[11px]">
                           <img
@@ -265,7 +268,6 @@ function upgrade() {
                         </div>
                       </div>
 
-                      {/* ZaloPay */}
                       <div className="bg-[#f4eeee] relative block rounded-xl mb-4">
                         <div className="w-[50px] h-[50px] rounded-[10px] overflow-hidden absolute left-[11px] top-[11px]">
                           <img
@@ -298,7 +300,6 @@ function upgrade() {
                         </div>
                       </div>
 
-                      {/* ShopeePay */}
                       <div className="bg-[#f4eeee] relative block rounded-xl mb-4">
                         <div className="w-[50px] h-[50px] rounded-[10px] overflow-hidden absolute left-[11px] top-[11px]">
                           <img
@@ -325,7 +326,6 @@ function upgrade() {
                         </div>
                       </div>
 
-                      {/* Momo */}
                       <div className="bg-[#f4eeee] relative block rounded-xl mb-4">
                         <div className="w-[50px] h-[50px] rounded-[10px] overflow-hidden absolute left-[11px] top-[11px]">
                           <img
@@ -352,7 +352,6 @@ function upgrade() {
                         </div>
                       </div>
 
-                      {/* Moca */}
                       <div className="bg-[#f4eeee] relative block rounded-xl mb-4">
                         <div className="w-[50px] h-[50px] rounded-[10px] overflow-hidden absolute left-[11px] top-[11px]">
                           <img
@@ -379,7 +378,6 @@ function upgrade() {
                         </div>
                       </div>
 
-                      {/* Viettel Pay */}
                       <div className="bg-[#f4eeee] relative block rounded-xl">
                         <div className="w-[50px] h-[50px] rounded-[10px] overflow-hidden absolute left-[11px] top-[11px]">
                           <img
@@ -407,7 +405,7 @@ function upgrade() {
                       </div>
                     </RadioGroup>
                   </FormControl>
-                </div>
+                </div>               */}
               </div>
 
               <div className="flex-[0_0_100%] max-w-full relative w-full px-[15px] lg:flex-[0_0_41.66666667%] lg:max-w-[41.66666667%]">

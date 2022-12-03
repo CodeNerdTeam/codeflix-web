@@ -138,7 +138,7 @@ function register() {
   };
 
   return (
-    <div className="relative flex flex-col h-screen w-screen bg-black md:items-center md:justify-center md:bg-transparent">
+    <main className="overflow-hidden">
       <Head>
         <title>Codeflix - Register</title>
         <link rel="icon" href="/favicon.ico" />
@@ -158,16 +158,9 @@ function register() {
         />
       </Box>
 
-      <Image
-        src={Wallpaper}
-        layout="fill"
-        className="-z-10 !hidden opacity-60 sm:!inline"
-        objectFit="fill"
-      />
-
       <img
         src="/logo_codeflix.png"
-        className="absolute object-contain left-4 top-4 cursor-pointer md:left-10 md:top-6"
+        className="absolute object-contain cu left-4 top-4 cursor-pointer md:left-10 md:top-6"
         width={150}
         height={150}
         onClick={() => {
@@ -175,83 +168,90 @@ function register() {
         }}
       />
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14"
-      >
-        <h1 className="text-4xl font-semibold">Create Account</h1>
-        <div className="space-y-4">
-          <label className="w-full inline-block">
-            <input
-              type="text"
-              placeholder="Name"
-              className="input"
-              required
-              onChange={(e) => handleNameChange(e.target.value)}
-            />
-          </label>
+      <section className="section">
+        <div className="color"></div>
+        <div className="color"></div>
+        <div className="color"></div>
+        <div className="relative">
+          <div className="square"></div>
+          <div className="square"></div>
+          <div className="square"></div>
+          <div className="square"></div>
+          <div className="square"></div>
+          <div className="containerForm">
+            <div className="form">
+              <h2>Create Account</h2>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="inputBox">
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    required
+                    onChange={(e) => handleNameChange(e.target.value)}
+                  />
+                </div>
 
-          <label className="w-full inline-block">
-            <input
-              type="email"
-              placeholder="Email"
-              className="input"
-              required
-              onChange={(e) => handleEmailChange(e.target.value)}
-            />
-          </label>
+                <div className="inputBox">
+                  <input
+                    type="tel"
+                    placeholder="Phone number"
+                    required
+                    onChange={(e) => handlePhoneChange(e.target.value)}
+                  />
+                </div>
 
-          <label className="w-full inline-block">
-            <input
-              type="tel"
-              placeholder="Phone number"
-              className="input"
-              required
-              onChange={(e) => handlePhoneChange(e.target.value)}
-            />
-          </label>
+                <div className="inputBox">
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    required
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                  />
+                </div>
 
-          <label className="w-full inline-block">
-            <input
-              type="password"
-              placeholder="Password"
-              className="input"
-              required
-              onChange={(e) => handlePasswordChange(e.target.value)}
-            />
-          </label>
+                <div className="inputBox">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    required
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                  />
+                </div>
 
-          <label className="w-full inline-block">
-            <input
-              type="password"
-              placeholder="Confirm password"
-              className="input"
-              required
-              onChange={(e) => handleConfirmPasswordChange(e.target.value)}
-            />
-          </label>
+                <div className="inputBox">
+                  <input
+                    type="password"
+                    placeholder="Confirm password"
+                    required
+                    onChange={(e) =>
+                      handleConfirmPasswordChange(e.target.value)
+                    }
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="inputBox hover:opacity-80 p-3 bg-[#e50914] text-white max-w-[100px] cursor-pointer mb-5 font-semibold
+                  flex justify-center items-center rounded-xl"
+                  onClick={() => {
+                    handleRegister();
+                  }}
+                >
+                  Sign Up
+                </button>
+
+                <p className="forget">
+                  Already an account?{" "}
+                  <a href="/login" className="hover:text-blue-500">
+                    Sign In Now
+                  </a>
+                </p>
+              </form>
+            </div>
+          </div>
         </div>
-
-        <button
-          className="w-full rounded bg-[#e50914] py-3 font-semibold hover:opacity-80"
-          onClick={() => handleRegister()}
-        >
-          Sign Up
-        </button>
-
-        <div className="text-[gray]">
-          Already an account?{" "}
-          <button
-            className="text-white hover:underline"
-            onClick={() => {
-              router.push("/login");
-            }}
-          >
-            Sign In Now
-          </button>
-        </div>
-      </form>
-    </div>
+      </section>
+    </main>
   );
 }
 

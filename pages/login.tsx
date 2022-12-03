@@ -119,7 +119,7 @@ function login() {
   };
 
   return (
-    <div className="relative flex flex-col h-screen w-screen bg-black md:items-center md:justify-center md:bg-transparent">
+    <main className="overflow-hidden">
       <Head>
         <title>Codeflix - Login</title>
         <link rel="icon" href="/favicon.ico" />
@@ -139,13 +139,6 @@ function login() {
         />
       </Box>
 
-      <Image
-        src={Wallpaper}
-        layout="fill"
-        className="-z-10 !hidden opacity-60 sm:!inline"
-        objectFit="fill"
-      />
-
       <img
         src="/logo_codeflix.png"
         className="absolute object-contain cu left-4 top-4 cursor-pointer md:left-10 md:top-6"
@@ -156,55 +149,67 @@ function login() {
         }}
       />
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14"
-      >
-        <h1 className="text-4xl font-semibold">Sign In</h1>
-        <div className="space-y-4">
-          <label className="w-full inline-block">
-            <input
-              type="email"
-              placeholder="Email"
-              className="input"
-              required
-              onChange={(e) => handleEmailChange(e.target.value)}
-            />
-          </label>
-          <label className="w-full inline-block">
-            <input
-              type="password"
-              placeholder="Password"
-              className="input"
-              onChange={(e) => handlePasswordChange(e.target.value)}
-            />
-          </label>
-        </div>
+      <section className="section">
+        <div className="color"></div>
+        <div className="color"></div>
+        <div className="color"></div>
+        <div className="relative">
+          <div className="square"></div>
+          <div className="square"></div>
+          <div className="square"></div>
+          <div className="square"></div>
+          <div className="square"></div>
+          <div className="containerForm">
+            <div className="form">
+              <h2>Login</h2>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="inputBox">
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    required
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                  />
+                </div>
 
-        <button
-          className="w-full rounded bg-[#e50914] py-3 font-semibold hover:opacity-80"
-          onClick={() => {
-            handleLogin();
-          }}
-          type="submit"
-        >
-          Sign In
-        </button>
+                <div className="inputBox">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    required
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                  />
+                </div>
 
-        <div className="text-[gray]">
-          New to Codeflix?{" "}
-          <button
-            className="text-white hover:underline"
-            type="submit"
-            onClick={() => {
-              router.push("/register");
-            }}
-          >
-            Sign Up Now
-          </button>
+                <button
+                  type="submit"
+                  className="inputBox hover:opacity-80 p-3 bg-[#e50914] text-white max-w-[100px] mb-5 font-semibold
+                  flex justify-center items-center rounded-xl"
+                  onClick={() => {
+                    handleLogin();
+                  }}
+                >
+                  Login
+                </button>
+
+                <p className="forget">
+                  Forgot password?{" "}
+                  <a href="#" className="hover:text-blue-500">
+                    Click Here
+                  </a>
+                </p>
+                <p className="forget">
+                  New to Codeflix?{" "}
+                  <a href="/register" className="hover:text-blue-500">
+                    Sign Up Now
+                  </a>
+                </p>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
-    </div>
+      </section>
+    </main>
   );
 }
 

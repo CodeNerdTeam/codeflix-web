@@ -7,5 +7,7 @@ export interface TransactionEntity {
   package: PackageEntity;
   walletId: string;
   wallet: WalletEntity;
+  price: number;
+  time: Date;
   created: Date;
 }

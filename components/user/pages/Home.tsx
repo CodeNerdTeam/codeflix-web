@@ -10,6 +10,7 @@ import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../../hook/firebase";
 import { deleteObjectFirebase } from "../../../hook/deleteFirebase";
+import { FaMedal } from "react-icons/fa";
 
 function Home() {
   const [data, setData] = useState<UserEntity>();
@@ -82,23 +83,24 @@ function Home() {
       <div className="text-[#555] mx-3 mt-16 max-w-[840px] p-2 lg:p-12 lg:max-w-[1120px] lg:mt-11 md:p-6 sm:p-4">
         <div className="lg:max-w-[840px]">
           <div className="pt-6">
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center relative">
+              {data?.premium ? (
+                <img
+                  src="/framegao.png"
+                  className="w-[130px] h-[130px] align-middle absolute z-10"
+                />
+              ) : (
+                ""
+              )}
+
               <div className="relative">
                 <button
                   typeof="button"
-                  className="block flex-grow-0 flex-shrink-0 rounded-[50%] border border-solid border-gray-300 cursor-default
+                  className="block flex-grow-0 flex-shrink-0 rounded-[50%] cursor-default
                   box-border overflow-hidden relative w-auto p-0 bg-none"
                   onClick={() => setOpenAvatar(!openAvatar)}
                 >
                   <figure className="flex items-center justify-center overflow-hidden m-0 p-0 w-24 h-24 rounded-[50%] relative">
-                    {data?.premium ? (
-                      <img
-                        src="/circle7mau.png"
-                        className="max-w-full align-middle absolute"
-                      />
-                    ) : (
-                      ""
-                    )}
                     <img
                       src={data?.avatar == "" ? "/icon.png" : data?.avatar}
                       className="h-full w-auto border-none"
@@ -107,7 +109,7 @@ function Home() {
 
                   <div
                     className="transition-opacity duration-200 ease-in-out bg-[rgba(32,33,36,.6)] bottom-0 h-[33%] left-0 opacity-0
-                    absolute right-0 hover:opacity-100"
+                    absolute right-0 hover:opacity-100 z-10"
                   >
                     <div className="avt-camera"></div>
                   </div>
@@ -115,9 +117,16 @@ function Home() {
               </div>
             </div>
 
-            <h1 className="text-3xl font-normal text-[#202124] text-center my-5">
-              Hello {data?.name}
-            </h1>
+            <div className="flex flex-row items-center justify-center my-5">
+              <h1 className="text-3xl font-normal text-[#202124] text-center mr-2">
+                Hello {data?.name}
+              </h1>
+              {data?.premium ? (
+                <FaMedal title="Member" className="text-3xl text-yellow-300" />
+              ) : (
+                ""
+              )}
+            </div>
 
             <div className="text-sm tracking-wide mt-4 text-center font-normal">
               Manage your information, plan upgrade services and payment history
@@ -127,6 +136,7 @@ function Home() {
         </div>
       </div>
 
+      {/* Change Avatar */}
       <div
         className={`${
           openAvatar ? "hidden" : "block"
@@ -227,7 +237,7 @@ function Home() {
                         >
                           {data?.premium ? (
                             <img
-                              src="/circle7mau.png"
+                              src="/framegao.png"
                               className="w-full h-full align-middle absolute"
                             />
                           ) : (
@@ -237,7 +247,7 @@ function Home() {
                             src={
                               data?.avatar == "" ? "/icon.png" : data?.avatar
                             }
-                            className="rounded-[50%] h-[95%] mt-2 max-w-[266px] w-auto object-cover"
+                            className="rounded-[50%] h-[90%] mt-4 max-w-[266px] w-auto object-cover"
                           />
                         </div>
 

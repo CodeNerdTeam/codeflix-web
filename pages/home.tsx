@@ -42,6 +42,7 @@ import { SearchIcon } from "@heroicons/react/solid";
 import { render } from "react-dom";
 import { Box, Rating } from "@mui/material";
 import { UserEntity } from "../models/UserEntity";
+import { MdBookmarkAdd, MdBookmarkRemove } from "react-icons/md";
 
 interface Props {
   netflixOriginals: Movie[];
@@ -66,9 +67,9 @@ const Home = ({
 }: Props) => {
   const [showModal, setShowModal] = useState(true);
   const [isModal, setIsModal] = useState(true);
-  const [alert, setAlert] = useState(true);
+  const [notice, setNotice] = useState(true);
   const [isOpenMovie, setIsOpenMovie] = useState(true);
-  const [premium, setPremium] = useState(true);
+  const [follow, setFollow] = useState(false);
   // const movie = useRecoilValue(movieState);
   const router = useRouter();
   const [data, setData] = useState<FilmEntity[]>([]);
@@ -78,6 +79,7 @@ const Home = ({
   const [comment, setComment] = useState("");
   const [showCommentOptions, setShowCommentOptions] = useState(true);
   const [avgRating, setAvgRating] = useState(0);
+  const [reviews, setReviews] = useState(0);
   const [user, setUser] = useState<UserEntity>();
   const [genresFilm, setGenresFilm] = useState<GenreFilmEntity[]>([]);
   const [castFilm, setCastFilm] = useState<PersonFilmEntity[]>([]);
@@ -148,6 +150,7 @@ const Home = ({
           }
         }
         const avg = sum / totalComment;
+        setReviews(totalComment);
         setAvgRating(avg);
       })
       .catch((err) => {
@@ -198,6 +201,20 @@ const Home = ({
       });
   };
 
+  const removeComment = async (id: String) => {
+    const jwtString = await sessionStorage.getItem("token");
+    axios
+      .delete(`${baseUrl}/api/rating/remove/${id}`, {
+        headers: { Authorization: `Bearer ${jwtString}` },
+      })
+      .then(() => {
+        getFilmById(movie!.id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const onChangeComment = (comment: any) => setComment(comment);
 
   const labels: { [index: string]: string } = {
@@ -207,6 +224,39 @@ const Home = ({
     4: "Good",
     5: "Excellent",
   };
+
+  const addPlaylist = async () => {
+    console.log("a");
+    const jwtString = await sessionStorage.getItem("token");
+    axios
+      .post(
+        `${baseUrl}/api/users/playlist`,
+        {
+          filmId: movie?.id,
+        },
+        {
+          headers: { Authorization: `Bearer ${jwtString} ` },
+        }
+      )
+      .then(() => {
+        alert("Ok");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // const checkFollow = () => {
+  //   for (const f of user!.playlists) {
+  //     if (f.filmId == movie?.id) {
+  //       setFollow(true);
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   checkFollow();
+  // });
 
   const renderFilms = () => {
     return (
@@ -335,7 +385,7 @@ const Home = ({
           isOpenMovie ? "block" : "hidden"
         } relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]`}
       >
-        <main className="relative px-4 pb-5 lg:space-y-24 lg:px-16">
+        <main className="relative px-4 lg:space-y-24 lg:px-16">
           {/* <Banner netflixOriginals={netflixOriginals} /> */}
           <div className="mb-[130px]"></div>
           <Slider />
@@ -348,7 +398,6 @@ const Home = ({
               <br />
               Which movie inspired you?"
             </p>
-
             <div className="flex flex-row text-sm font-light">
               <input
                 type="text"
@@ -424,12 +473,17 @@ const Home = ({
                 {movie?.name}
               </h2>
 
-              <Rating
-                name="rating"
-                value={avgRating}
-                readOnly
-                className="mt-5 font-semibold"
-              />
+              <div className="flex items-center">
+                <Rating
+                  name="rating"
+                  value={avgRating}
+                  readOnly
+                  className="mt-5 font-semibold mr-2"
+                />
+                <span className="mt-5 text-gray-300 font-normal">
+                  {reviews} Reviews
+                </span>
+              </div>
 
               <span className="mt-5 font-semibold">
                 Intro:{" "}
@@ -453,19 +507,19 @@ const Home = ({
               </span>
 
               <>
-                <span className="mt-5 font-semibold">Genres:</span>
-                <div className="flex flex-row">
+                <span className="mt-5 font-semibold">
+                  Genres:{" "}
                   {movie?.genres.map((value) => (
                     <span className="mt-5 text-gray-300 font-normal text-sm">
                       {value.genre.name},{" "}
                     </span>
                   ))}
-                </div>
+                </span>
               </>
 
               <>
-                <span className="mt-5 font-semibold">Cast:</span>
-                <div className="flex flex-row">
+                <span className="mt-5 font-semibold">
+                  Cast:{" "}
                   {movie?.persons.map((value, key) => (
                     <span
                       key={key}
@@ -474,7 +528,7 @@ const Home = ({
                       {value.person.name},{" "}
                     </span>
                   ))}
-                </div>
+                </span>
               </>
 
               <>
@@ -485,31 +539,69 @@ const Home = ({
                   </span>
                 </span>
               </>
-              <div
-                className="flex mt-5 bg-yellow-500 px-5 py-4 rounded-lg w-max cursor-pointer 
+
+              <div className="flex gap-5">
+                <div
+                  title="Watch now"
+                  className="flex mt-5 bg-[#25867d] px-6 py-4 rounded-md w-max cursor-pointer 
                 justify-center items-center hover:opacity-80"
-                onClick={() => {
-                  if (movie?.premium != false && user?.premium == true) {
-                    setIsOpenMovie(!isOpenMovie);
-                  } else if (movie?.premium != false && user?.premium != true) {
-                    setAlert(!alert);
-                  } else {
-                    setIsOpenMovie(!isOpenMovie);
-                  }
-                }}
-              >
-                <FaPlay />
-                <p className="ml-2 font-semibold text-white">Play</p>
+                  onClick={() => {
+                    if (movie?.premium != false && user?.premium == true) {
+                      setIsOpenMovie(!isOpenMovie);
+                    } else if (
+                      movie?.premium != false &&
+                      user?.premium != true
+                    ) {
+                      setNotice(!notice);
+                    } else {
+                      setIsOpenMovie(!isOpenMovie);
+                    }
+                  }}
+                >
+                  <FaPlay />
+                </div>
+
+                <div
+                  title="Add to playlist"
+                  className="flex mt-5 bg-[#25867d] px-6 py-4 rounded-md w-max cursor-pointer 
+                  justify-center items-center hover:opacity-80"
+                  onClick={() => {
+                    if (movie?.premium != false && user?.premium == true) {
+                      addPlaylist();
+                    } else if (
+                      movie?.premium == false &&
+                      user?.premium == true
+                    ) {
+                      addPlaylist();
+                    } else if (
+                      movie?.premium != false &&
+                      user?.premium != true
+                    ) {
+                      setNotice(!notice);
+                    }
+                  }}
+                >
+                  <MdBookmarkAdd className="text-xl" />
+                </div>
+
+                {/* <div
+                  title="Unfollow this movie"
+                  className="flex mt-5 bg-[rgb(125,72,72)] px-6 py-4 rounded-md w-max cursor-pointer 
+                  justify-center items-center hover:opacity-80"
+                  onClick={() => {}}
+                >
+                  <MdBookmarkRemove className="text-xl" />
+                </div> */}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Alert */}
+      {/* Notice */}
       <div
         className={`${
-          alert ? "hidden" : "block"
+          notice ? "hidden" : "block"
         } fixed top-0 left-0 right-0 z-[200] mx-auto w-full h-screen overflow-hidden
       overflow-y-scroll !scrollbar-hide shadow-lg bg-[rgba(0,0,0,0.4)] border-2 border-black`}
       >
@@ -518,8 +610,8 @@ const Home = ({
           bg-[url('/warning.png')] bg-center"
         >
           <AiFillCloseCircle
-            className="mr-4 mt-2 text-5xl left-0 hover:opacity-50 text-black opacity-60 cursor-pointer"
-            onClick={() => setAlert(!alert)}
+            className="mr-4 mt-2 text-5xl left-0 hover:opacity-50 text-white md:text-black opacity-60 cursor-pointer"
+            onClick={() => setNotice(!notice)}
           />
 
           <div className="flex flex-col justify-center items-center my-10 mx-4 container md:mx-10 text-shadow-sm">
@@ -581,12 +673,11 @@ const Home = ({
               <form action="" className="w-full p-4">
                 <div className="flex flex-row items-center">
                   <label htmlFor="rating" className="text-lg text-gray-200">
-                    Make rating:
+                    Movie rating:
                   </label>
 
                   <Rating
                     name="rating"
-                    defaultValue={5}
                     value={rating}
                     className="font-semibold ml-2"
                     onChange={(event, newRating) => {
@@ -621,7 +712,7 @@ const Home = ({
                     cursor-pointer"
                     onClick={() => addComment()}
                   >
-                    Comment
+                    Post
                   </div>
                   <div
                     className="w-max px-3 py-2 text-sm text-blue-600 border border-blue-500 rounded hover:opacity-80 cursor-pointer"
@@ -634,7 +725,7 @@ const Home = ({
             </div>
 
             <div className="w-full text-2xl font-medium text-gray-200">
-              Comment : <span className="text-xl">{movie?.ratings.length}</span>
+              {movie?.ratings.length} Comments
             </div>
 
             <div className="w-full flex flex-col justify-center relative pb-5">
@@ -643,10 +734,19 @@ const Home = ({
                   <div className="relative grid grid-cols-1 gap-4 p-4 mt-8 border rounded-lg bg-[#0f0f0f] shadow-lg w-full">
                     <div className="relative flex gap-4">
                       <div className="flex items-center justify-center box-border relative shadow w-32">
-                        {value.user.premium ? (
+                        {value.user.premium && value.user.role == "User" ? (
                           <img
                             src="/fireframe.png"
-                            className="max-w-full absolute -mb-6 -top-11 h-[103px] w-[103px]"
+                            className="max-w-full absolute -mb-5 -top-[42.5px] h-[101px] w-[101px] z-10"
+                          />
+                        ) : (
+                          ""
+                        )}
+
+                        {value.user.role != "User" ? (
+                          <img
+                            src="/framelaplanh.png"
+                            className="max-w-full absolute -mb-5 -top-[42.5px] h-[101px] w-[101px] z-10"
                           />
                         ) : (
                           ""
@@ -658,7 +758,7 @@ const Home = ({
                               ? "/icon.png"
                               : value.user?.avatar
                           }
-                          className="relative rounded-md -top-8 -mb-4 bg-white border h-20 w-20"
+                          className="relative -top-8 -mb-4 bg-white border h-20 w-20"
                           loading="lazy"
                         />
                       </div>
@@ -688,12 +788,16 @@ const Home = ({
                           </div>
                         </div>
 
-                        <Rating
-                          name="rating"
-                          value={value.point}
-                          readOnly
-                          className="font-semibold "
-                        />
+                        {value.user.role == "User" ? (
+                          <Rating
+                            name="rating"
+                            value={value.point}
+                            readOnly
+                            className="font-semibold"
+                          />
+                        ) : (
+                          ""
+                        )}
                       </div>
 
                       <div
@@ -703,7 +807,10 @@ const Home = ({
                           showCommentOptions ? "hidden" : "block"
                         } bg-[#282828] h-max w-max py-2 text-gray-300 rounded-lg`}
                       >
-                        <div className="py-2 cursor-pointer hover:bg-[#717171]">
+                        <div
+                          className="py-2 cursor-pointer hover:bg-[#717171]"
+                          onClick={() => removeComment(value.id)}
+                        >
                           <div className="flex flex-row items-center justify-center pl-4 pr-3">
                             <BsTrashFill />
                             <span className="ml-2">Delete</span>
