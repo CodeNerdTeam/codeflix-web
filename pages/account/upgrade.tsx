@@ -479,7 +479,7 @@ function upgrade() {
                             Service pack type:
                           </td>
                           <td className="text-right text-black pb-4 font-medium font-sans text-sm">
-                            {goi?.time}
+                            {goi?.time} days
                           </td>
                         </tr>
                       </tbody>

@@ -92,7 +92,15 @@ function playlist() {
             >
               <div className="md:flex-1 md:basis-[0.000000001px] max-w-full min-w-0">
                 {user?.playLists.map((value) => (
-                  <div className="flex flex-row cursor-pointer shadow-none rounded-xl items-center mb-2 hover:bg-[#272727d1]">
+                  <div
+                    className="flex flex-row cursor-pointer shadow-none rounded-xl items-center mb-2 hover:bg-[#272727d1]"
+                    onClick={() =>
+                      router.push({
+                        pathname: "/film/watch/[idFilm]",
+                        query: { idFilm: value.filmId },
+                      })
+                    }
+                  >
                     <div className="flex flex-row items-center self-stretch pl-2 pr-1">
                       <div className="flex-none items-center px-0 py-[6px] justify-center relative align-middle">
                         <TbMenu className="w-full h-full pointer-events-none" />

@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { BiHelpCircle } from "react-icons/bi";
-import { FaBuyNLarge, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { GrGoogleWallet } from "react-icons/gr";
 import { ImProfile } from "react-icons/im";
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline, IoDiamond } from "react-icons/io5";
 import { MdOutlineLogout, MdPayment } from "react-icons/md";
 import { Si1Password } from "react-icons/si";
 import { baseUrl } from "../../constants/api";
@@ -209,7 +209,7 @@ export default function Topbar() {
                     router.push("/account/upgrade");
                   }}
                 >
-                  <FaBuyNLarge
+                  <IoDiamond
                     className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-600 group-hover:text-gray-900
                 dark:group-hover:text-white"
                   />

@@ -3,11 +3,10 @@ import { WalletEntity } from "./WalletEntity";
 
 export interface TransactionEntity {
   id: string;
-  packageId: string;
-  package: PackageEntity;
   walletId: string;
   wallet: WalletEntity;
+  packageName: string;
   price: number;
-  time: Date;
+  time: number;
   created: Date;
 }

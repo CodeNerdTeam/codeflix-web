@@ -47,18 +47,21 @@ function Home() {
 
   //const id = sessionStorage.getItem("id");
 
-  const changeAvatar = async (id: string) => {
+  const changeAvatar = async () => {
     const jwtString = await sessionStorage.getItem("token");
+    const avatarRef = ref(storage, `avatars/${v4()}`);
+
     if (avatar == null) {
       return;
     } else {
-      const avatarRef = ref(storage, `avatars/${v4()}`);
+      if (data?.avatar != "null") {
+        deleteObjectFirebase(data?.avatar);
+      }
       uploadBytes(avatarRef, avatar).then(() => {
         getDownloadURL(avatarRef).then((url) => {
-          deleteObjectFirebase(data?.avatar);
           axios
             .put(
-              `${baseUrl}/api/users/avt/${id}`,
+              `${baseUrl}/api/users/avatar`,
               { avatar: url },
               {
                 headers: { Authorization: `Bearer ${jwtString}` },
@@ -267,7 +270,7 @@ function Home() {
                                 className="py-3 pr-[15px] pl-[11px] border-gray-500 rounded border w-full dark:font-sans dark:text-sm
                               dark:tracking-wide dark:font-medium dark:normal-case dark:transition dark:duration-300 dark:ease-in-out
                               dark:shadow-none text-[#1a73e8] hover:bg-slate-800"
-                                onClick={() => changeAvatar(data!.id)}
+                                onClick={() => changeAvatar()}
                               >
                                 <RiPencilLine
                                   className="text-lg h-[18px] ml-0 mr-2 inline-block relative align-top font-sans

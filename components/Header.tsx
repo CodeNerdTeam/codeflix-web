@@ -378,7 +378,7 @@ export function Header() {
             className="flex flex-row items-center w-full py-3 px-7 mt-2 hover:bg-gray-500"
             onClick={() => {
               setIsShowLoading(!isShowLoading);
-              router.push("./account/home");
+              router.push("/account/home");
             }}
           >
             <MdAccountBox className="text-2xl" />

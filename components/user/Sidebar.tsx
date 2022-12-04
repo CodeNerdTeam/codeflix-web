@@ -1,4 +1,4 @@
-import { FaUserCircle, FaBuyNLarge } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { MdPayment } from "react-icons/md";
 import { BiHelpCircle } from "react-icons/bi";
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { GrGoogleWallet } from "react-icons/gr";
 import { Si1Password } from "react-icons/si";
 import { AiFillHome } from "react-icons/ai";
+import { IoDiamond } from "react-icons/io5";
 
 function Sidebar() {
   const router = useRouter();
@@ -82,7 +83,7 @@ function Sidebar() {
               router.push("/account/upgrade");
             }}
           >
-            <FaBuyNLarge className="text-2xl" />
+            <IoDiamond className="text-2xl" />
             <h3 className="ml-4">Buy package</h3>
           </div>
 

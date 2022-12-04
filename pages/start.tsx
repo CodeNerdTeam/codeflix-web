@@ -41,7 +41,9 @@ function start() {
               muted
               autoPlay
               loop
-              className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full object-contain after:absolute after:left-0 after:top-0 after:w-full after:h-full after:content-[''] after:bg-[url('/videoBlock2.png')] after:bg-[100%,100%]"
+              className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full object-contain 
+              after:absolute after:left-0 after:top-0 after:w-full after:h-full after:content-[''] after:bg-[url('/videoBlock2.png')] 
+              after:bg-[100%,100%]"
             ></video>
           </div>
         </div>

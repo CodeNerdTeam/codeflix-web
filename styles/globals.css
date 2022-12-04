@@ -395,4 +395,12 @@
     font-weight: 600;
     text-decoration: underline;
   }
+
+  .user-info {
+    display: none;
+  }
+
+  .avt-user:hover + .user-info {
+    display: inline-block;
+  }
 }

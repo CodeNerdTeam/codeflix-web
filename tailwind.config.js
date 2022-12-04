@@ -16,5 +16,6 @@ module.exports = {
     require("tailwind-scrollbar-hide"),
     require("tailwind-scrollbar"),
     require("tailwindcss-textshadow"),
+    require("tailwindcss-hyphens"),
   ],
 };

@@ -181,10 +181,9 @@ function Profile() {
 
                         <div className="relative outline-none overflow-hidden will-change">
                           <a
+                            href="/account/profile/name"
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
-                            data-rid="10090"
-                            data-nav-type="5"
                           >
                             <div className="flex items-center" role="text">
                               <div className="flex-1">
@@ -233,8 +232,6 @@ function Profile() {
                             href=""
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
-                            data-rid="10090"
-                            data-nav-type="5"
                           >
                             <div className="flex items-center" role="text">
                               <div className="flex-1">
@@ -280,10 +277,9 @@ function Profile() {
 
                         <div className="relative outline-none overflow-hidden will-change">
                           <a
+                            href="/account/profile/gender"
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
-                            data-rid="10090"
-                            data-nav-type="5"
                           >
                             <div className="flex items-center" role="text">
                               <div className="flex-1">
@@ -331,8 +327,6 @@ function Profile() {
                           <a
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
-                            data-rid="10090"
-                            data-nav-type="5"
                           >
                             <div className="flex items-center" role="text">
                               <div className="flex-1">
@@ -370,8 +364,6 @@ function Profile() {
                           <a
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
-                            data-rid="10090"
-                            data-nav-type="5"
                           >
                             <div className="flex items-center" role="text">
                               <div className="flex-1">
@@ -447,8 +439,6 @@ function Profile() {
                           <a
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
-                            data-rid="10090"
-                            data-nav-type="5"
                           >
                             <div className="flex items-center" role="text">
                               <div className="flex-1">
@@ -471,7 +461,7 @@ function Profile() {
                                 </div>
                               </div>
 
-                              <div className="flex-grow-0 flex-shrink-0 ml-4">
+                              {/* <div className="flex-grow-0 flex-shrink-0 ml-4">
                                 <figure
                                   className="flex items-center justify-center h-6 m-0 p-0 w-6 left-0"
                                   aria-hidden="true"
@@ -481,7 +471,7 @@ function Profile() {
                                     aria-hidden="true"
                                   />
                                 </figure>
-                              </div>
+                              </div> */}
                             </div>
                           </a>
                         </div>
@@ -496,8 +486,6 @@ function Profile() {
                           <a
                             className="h-full block bg-none border-none non-text-decoration text-left w-full box-border text-[rgb(26,115,232)]
                              pt-[15px] pb-4 px-4 -outline-offset-4 md:px-6"
-                            data-rid="10090"
-                            data-nav-type="5"
                           >
                             <div className="flex items-center" role="text">
                               <div className="flex-1">
@@ -520,7 +508,7 @@ function Profile() {
                                 </div>
                               </div>
 
-                              <div className="flex-grow-0 flex-shrink-0 ml-4">
+                              {/* <div className="flex-grow-0 flex-shrink-0 ml-4">
                                 <figure
                                   className="flex items-center justify-center h-6 m-0 p-0 w-6 left-0"
                                   aria-hidden="true"
@@ -530,7 +518,7 @@ function Profile() {
                                     aria-hidden="true"
                                   />
                                 </figure>
-                              </div>
+                              </div> */}
                             </div>
                           </a>
                         </div>

@@ -50,10 +50,11 @@ function transaction() {
             >
               <div className="md:p-6">
                 <div className="flex flex-col text-[rgb(95,99,104)] text-base font-normal tracking-wide">
-                  <span>Name: {value.package.name}</span>
+                  <span>Name: {value.packageName}</span>
                   <span>Price: {value.price} ZEN</span>
-                  <span>Time: {value.time.toString()} days</span>
+                  <span>Time: {value.time} days</span>
                   <span>Purchase date: {value.created.toString()}</span>
+                  <span>Package expiry date: {user.dateUse.toString()}</span>
                 </div>
               </div>
               <div className="hidden md:pb-6"></div>
@@ -65,7 +66,7 @@ function transaction() {
   };
 
   return (
-    <div className="bg-white w-screen h-max">
+    <div className="bg-white w-screen min-h-screen">
       <Head>
         <title>Codeflix - Transaction</title>
         <link rel="icon" href="/favicon.ico" />
@@ -75,18 +76,11 @@ function transaction() {
         <Topbar />
         <div className="h-14"></div>
         <div className="bg-white h-14 flex fixed w-full z-[998] transition">
-          <div
-            className="items-center flex m-auto max-w-full min-w-0 w-[690px]"
-            role="navigation"
-          >
+          <div className="items-center flex m-auto max-w-full min-w-0 w-[690px]">
             <div
               id="btnLeft"
               className="flex-shrink-0 mr-1 align-middle text-[rgba(0,0,0,.54)] fill-[rgba(0,0,0,.54)] border-0 rounded-[50%]
             cursor-pointer inline-block h-12 outline-none overflow-hidden relative text-center w-12 z-0"
-              role="button"
-              aria-disabled="false"
-              tabIndex={0}
-              aria-label="Back"
             >
               <span className="relative top-1/2">
                 <span className="-top-3 inline-block relative">

@@ -23,6 +23,7 @@ import requests from "../utils/request";
 import { FaMedal, FaPlay } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
 import {
+  BsFillEmojiSmileFill,
   BsInfoCircleFill,
   BsShieldFillCheck,
   BsThreeDotsVertical,
@@ -65,26 +66,22 @@ const Home = ({
   romanceMovies,
   documentaries,
 }: Props) => {
-  const [showModal, setShowModal] = useState(true);
   const [isModal, setIsModal] = useState(true);
   const [notice, setNotice] = useState(true);
   const [isOpenMovie, setIsOpenMovie] = useState(true);
-  const [follow, setFollow] = useState(false);
   // const movie = useRecoilValue(movieState);
   const router = useRouter();
   const [data, setData] = useState<FilmEntity[]>([]);
   const [dataSearch, setDataSearch] = useState<FilmEntity[]>([]);
   const [movie, setMovie] = useState<FilmEntity>();
   const [keywords, setKeywords] = useState("");
-  const [comment, setComment] = useState("");
-  const [showCommentOptions, setShowCommentOptions] = useState(true);
+  // const [comment, setComment] = useState("");
+  // const [showCommentOptions, setShowCommentOptions] = useState(true);
   const [avgRating, setAvgRating] = useState(0);
   const [reviews, setReviews] = useState(0);
   const [user, setUser] = useState<UserEntity>();
-  const [genresFilm, setGenresFilm] = useState<GenreFilmEntity[]>([]);
-  const [castFilm, setCastFilm] = useState<PersonFilmEntity[]>([]);
-  const [rating, setRating] = useState<number | null>(2);
-  const [hover, setHover] = useState(-1);
+  // const [rating, setRating] = useState<number | null>(2);
+  // const [hover, setHover] = useState(-1);
 
   useEffect(() => {
     if (
@@ -139,7 +136,7 @@ const Home = ({
       })
       .then((res) => {
         setMovie(res.data);
-        //localStorage.setItem("film", res.data.id);
+        localStorage.setItem("film", res.data.id);
         //console.log(res.data);
         let sum = 0;
         let totalComment = 0;
@@ -178,28 +175,28 @@ const Home = ({
       });
   };
 
-  const addComment = async () => {
-    const jwtString = await sessionStorage.getItem("token");
-    axios
-      .post(
-        `${baseUrl}/api/rating/create`,
-        {
-          filmId: movie?.id,
-          point: rating,
-          comment: comment,
-        },
-        {
-          headers: { Authorization: `Bearer ${jwtString}` },
-        }
-      )
-      .then(() => {
-        getFilmById(movie!.id);
-        setComment("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const addComment = async () => {
+  //   const jwtString = await sessionStorage.getItem("token");
+  //   axios
+  //     .post(
+  //       `${baseUrl}/api/rating/create`,
+  //       {
+  //         filmId: movie?.id,
+  //         point: rating,
+  //         comment: comment,
+  //       },
+  //       {
+  //         headers: { Authorization: `Bearer ${jwtString}` },
+  //       }
+  //     )
+  //     .then(() => {
+  //       getFilmById(movie!.id);
+  //       setComment("");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const removeComment = async (id: String) => {
     const jwtString = await sessionStorage.getItem("token");
@@ -215,15 +212,15 @@ const Home = ({
       });
   };
 
-  const onChangeComment = (comment: any) => setComment(comment);
+  // const onChangeComment = (comment: any) => setComment(comment);
 
-  const labels: { [index: string]: string } = {
-    1: "Useless",
-    2: "Poor",
-    3: "Ok",
-    4: "Good",
-    5: "Excellent",
-  };
+  // const labels: { [index: string]: string } = {
+  //   1: "Useless",
+  //   2: "Poor",
+  //   3: "Ok",
+  //   4: "Good",
+  //   5: "Excellent",
+  // };
 
   const addPlaylist = async () => {
     console.log("a");
@@ -245,18 +242,6 @@ const Home = ({
         console.log(err);
       });
   };
-
-  // const checkFollow = () => {
-  //   for (const f of user!.playlists) {
-  //     if (f.filmId == movie?.id) {
-  //       setFollow(true);
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   checkFollow();
-  // });
 
   const renderFilms = () => {
     return (
@@ -466,7 +451,7 @@ const Home = ({
           <div className="flex flex-col my-10 mx-4 container md:mx-10 md:flex-row">
             <img
               src={movie?.mobileUrl}
-              className="md:w-64 w-auto h-1/2 object-fill"
+              className="md:w-64 w-auto h-96 object-fill"
             />
             <div className="ml-5 flex flex-col">
               <h2 className="md:text-4xl md:mt-0 mt-5 text-xl font-semibold text-white">
@@ -511,7 +496,10 @@ const Home = ({
                   Genres:{" "}
                   {movie?.genres.map((value) => (
                     <span className="mt-5 text-gray-300 font-normal text-sm">
-                      {value.genre.name},{" "}
+                      <a href="" className="hover:text-yellow-300">
+                        {value.genre.name}
+                      </a>
+                      ,{" "}
                     </span>
                   ))}
                 </span>
@@ -547,14 +535,22 @@ const Home = ({
                 justify-center items-center hover:opacity-80"
                   onClick={() => {
                     if (movie?.premium != false && user?.premium == true) {
-                      setIsOpenMovie(!isOpenMovie);
+                      //setIsOpenMovie(!isOpenMovie);
+                      router.push({
+                        pathname: "/film/watch/[idFilm]",
+                        query: { idFilm: movie?.id },
+                      });
                     } else if (
                       movie?.premium != false &&
                       user?.premium != true
                     ) {
                       setNotice(!notice);
                     } else {
-                      setIsOpenMovie(!isOpenMovie);
+                      //setIsOpenMovie(!isOpenMovie);
+                      router.push({
+                        pathname: "/film/watch/[idFilm]",
+                        query: { idFilm: movie?.id },
+                      });
                     }
                   }}
                 >
@@ -637,7 +633,7 @@ const Home = ({
       </div>
 
       {/* Film */}
-      <main
+      {/* <main
         className={`${
           isOpenMovie ? "hidden" : "block"
         } relative left-0 right-0 top-24 h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]`}
@@ -706,7 +702,8 @@ const Home = ({
                     onChange={(e) => onChangeComment(e.target.value)}
                   ></textarea>
                 </div>
-                <div className="flex flex-row">
+
+                <div className="flex justify-end">
                   <div
                     className="w-max px-3 py-2 mr-2 text-sm text-blue-100 bg-blue-600 rounded hover:text-blue-50 hover:bg-blue-500
                     cursor-pointer"
@@ -714,6 +711,7 @@ const Home = ({
                   >
                     Post
                   </div>
+
                   <div
                     className="w-max px-3 py-2 text-sm text-blue-600 border border-blue-500 rounded hover:opacity-80 cursor-pointer"
                     onClick={() => setComment("")}
@@ -834,7 +832,7 @@ const Home = ({
             </div>
           </div>
         </div>
-      </main>
+      </main> */}
     </>
   );
 };
