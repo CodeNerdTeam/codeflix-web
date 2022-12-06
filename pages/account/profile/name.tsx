@@ -2,16 +2,22 @@ import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaUserFriends } from "react-icons/fa";
 import { HiOutlineArrowLeft } from "react-icons/hi";
 import Topbar from "../../../components/user/Topbar";
 import { baseUrl } from "../../../constants/api";
 import { UserEntity } from "../../../models/UserEntity";
 
+interface Inputs {
+  name: string;
+}
+
 function name() {
   const router = useRouter();
   const [user, setUser] = useState<UserEntity>();
   const [name, setName] = useState("");
+  const { handleSubmit } = useForm<Inputs>();
 
   useEffect(() => {
     if (sessionStorage.getItem("token") != null) {
@@ -39,6 +45,36 @@ function name() {
   useEffect(() => {
     getUser();
   }, []);
+
+  const handleChangeName = () => {
+    const jwtString = sessionStorage.getItem("token");
+
+    if (name == "") return;
+    if (user?.name == name)
+      return alert("Your name must be different from your current name!");
+    axios
+      .put(
+        `${baseUrl}/api/users/user-change`,
+        {
+          Name: name,
+          Sex: user?.sex,
+        },
+        {
+          headers: { Authorization: `Bearer ${jwtString}` },
+        }
+      )
+      .then((res) => {
+        //console.log(result);
+        alert("Your information is the most recent.");
+        router.push("/account/profile");
+      })
+      .catch((err) => {
+        alert("Update failed!");
+        console.log(err);
+      });
+  };
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {};
 
   return (
     <div className="bg-white w-screen min-h-screen">
@@ -103,62 +139,71 @@ function name() {
                     </a>
                   </div>
 
-                  <div className="text-[#3c4043] text-base flex flex-col">
-                    <span className="mb-3">Name</span>
-                    <input
-                      type="text"
-                      className="p-3 focus:outline-blue-500 border border-solid rounded border-gray-500 placeholder-gray-600"
-                      value={name}
-                      placeholder="Enter your name"
-                      onChange={(e: any) => setName(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="mt-6 w-full max-w-[400px]">
-                    <div className="font-sans text-base font-medium tracking-wide w-full text-[rgb(32,33,36)] hyphens-auto">
-                      People who can see your name
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="text-[#3c4043] text-base flex flex-col">
+                      <span className="mb-3">Name</span>
+                      <input
+                        type="text"
+                        className="p-3 focus:outline-blue-500 border border-solid rounded border-gray-500 placeholder-gray-600"
+                        placeholder="Enter your name"
+                        required
+                        onChange={(e: any) => setName(e.target.value)}
+                      />
                     </div>
 
-                    <div className="mt-2 flex font-sans text-sm tracking-wide hyphens-auto text-[rgb(95,99,104)] font-normal">
-                      <span className="flex-shrink-0 h-5 mr-4 w-5">
-                        <FaUserFriends className="text-xl" />
-                      </span>
-
-                      <div>
-                        People can see this information when they contact you or
-                        view content you create in Codeflix services.{" "}
-                        <a href="" className="relative text-[rgb(26,115,232)]">
-                          Looking for more information
-                        </a>
+                    <div className="mt-6 w-full max-w-[400px]">
+                      <div className="font-sans text-base font-medium tracking-wide w-full text-[rgb(32,33,36)] hyphens-auto">
+                        People who can see your name
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="flex justify-end my-6 px-0">
-                    <div className="inline-flex">
-                      <div className="inline-block">
-                        <div className="inline">
-                          <button
-                            className="text-blue-400 py-2 px-3 hover:bg-sky-50 rounded"
-                            onClick={() => {
-                              router.push("/account/profile");
-                            }}
+                      <div className="mt-2 flex font-sans text-sm tracking-wide hyphens-auto text-[rgb(95,99,104)] font-normal">
+                        <span className="flex-shrink-0 h-5 mr-4 w-5">
+                          <FaUserFriends className="text-xl" />
+                        </span>
+
+                        <div>
+                          People can see this information when they contact you
+                          or view content you create in Codeflix services.{" "}
+                          <a
+                            href=""
+                            className="relative text-[rgb(26,115,232)]"
                           >
-                            Cancel
-                          </button>
+                            Looking for more information
+                          </a>
                         </div>
                       </div>
                     </div>
-                    <div className="inline-flex ml-2">
-                      <div className="inline-block">
-                        <div className="inline">
-                          <button className="text-white py-2 px-6 rounded bg-blue-500 hover:bg-blue-600">
-                            Save
-                          </button>
+
+                    <div className="flex justify-end my-6 px-0">
+                      <div className="inline-flex">
+                        <div className="inline-block">
+                          <div className="inline">
+                            <button
+                              type="submit"
+                              className="text-blue-400 py-2 px-3 hover:bg-sky-50 rounded"
+                              onClick={() => {
+                                router.push("/account/profile");
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="inline-flex ml-2">
+                        <div className="inline-block">
+                          <div className="inline">
+                            <button
+                              className="text-white py-2 px-6 rounded bg-blue-500 hover:bg-blue-600"
+                              onClick={() => handleChangeName()}
+                            >
+                              Save
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
 
                 <span

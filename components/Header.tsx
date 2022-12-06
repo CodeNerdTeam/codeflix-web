@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 import { SiHomebridge } from "react-icons/si";
-import { MdOutlineSlideshow, MdMovieFilter } from "react-icons/md";
 import { FaHotjar } from "react-icons/fa";
 import { BiBookHeart } from "react-icons/bi";
 import { MdAccountBox } from "react-icons/md";
@@ -184,8 +183,6 @@ export function Header() {
                 Home
               </div>
             </li>
-            <li className="headerLink">TV Shows</li>
-            <li className="headerLink">Movies</li>
             <li className="headerLink">New & Popular</li>
             <li className="headerLink">
               <div
@@ -197,7 +194,16 @@ export function Header() {
                 My list
               </div>
             </li>
-            <li className="headerLink">History</li>
+            <li className="headerLink">
+              <div
+                title="History"
+                onClick={() => {
+                  router.push("/feed/history");
+                }}
+              >
+                History
+              </div>
+            </li>
           </ul>
         </div>
         <div className="flex items-center space-x-4 text-sm font-light">
@@ -286,32 +292,6 @@ export function Header() {
               </li>
 
               <li>
-                <a
-                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100
-                dark:hover:bg-gray-700 cursor-pointer"
-                >
-                  <MdOutlineSlideshow
-                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900
-                dark:group-hover:text-white"
-                  />
-                  <span className="ml-3">TV Shows</span>
-                </a>
-              </li>
-
-              <li>
-                <div
-                  className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100
-                dark:hover:bg-gray-700 cursor-pointer"
-                >
-                  <MdMovieFilter
-                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900
-                dark:group-hover:text-white"
-                  />
-                  <span className="ml-3">Movies</span>
-                </div>
-              </li>
-
-              <li>
                 <div
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100
                 dark:hover:bg-gray-700 cursor-pointer"
@@ -344,6 +324,9 @@ export function Header() {
                 <div
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100
                 dark:hover:bg-gray-700 cursor-pointer"
+                  onClick={() => {
+                    router.push("/feed/history");
+                  }}
                 >
                   <BiBookHeart
                     className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900

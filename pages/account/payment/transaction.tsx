@@ -50,11 +50,25 @@ function transaction() {
             >
               <div className="md:p-6">
                 <div className="flex flex-col text-[rgb(95,99,104)] text-base font-normal tracking-wide">
-                  <span>Name: {value.packageName}</span>
-                  <span>Price: {value.price} ZEN</span>
-                  <span>Time: {value.time} days</span>
-                  <span>Purchase date: {value.created.toString()}</span>
-                  <span>Package expiry date: {user.dateUse.toString()}</span>
+                  <div>
+                    <span className="font-medium">Name:</span>{" "}
+                    {value.packageName}
+                  </div>
+                  <div>
+                    <span className="font-medium">Price:</span> {value.price}{" "}
+                    ZEN
+                  </div>
+                  <div>
+                    <span className="font-medium">Time:</span> {value.time} days
+                  </div>
+                  <div>
+                    <span className="font-medium">Purchase date:</span>{" "}
+                    {value.created.toString()}
+                  </div>
+                  <div>
+                    <span className="font-medium">Package expiry date:</span>{" "}
+                    {user.dateUse.toString()}
+                  </div>
                 </div>
               </div>
               <div className="hidden md:pb-6"></div>

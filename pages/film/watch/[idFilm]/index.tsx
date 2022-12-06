@@ -1,6 +1,8 @@
 import { Box, Rating } from "@mui/material";
 import axios from "axios";
 import Head from "next/head";
+import Image from "next/image";
+import Wallpaper from "../../../../assets/wallpp.png";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import {
@@ -137,10 +139,17 @@ function index() {
   return (
     <>
       <Head>
-        <title>Codeflix - {movie?.name}</title>
+        <title>Codeflix - Watching {movie?.name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
+
+      <Image
+        src={Wallpaper}
+        layout="fill"
+        className="-z-10 !hidden opacity-60 sm:!inline"
+        objectFit="fill"
+      />
 
       <main
         className={` relative left-0 right-0 top-24 h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]`}
@@ -319,24 +328,6 @@ function index() {
                           )}
                         </div>
 
-                        <div
-                          className={`${
-                            value.userId == user?.id ? "block" : "hidden"
-                          } ${
-                            showCommentOptions ? "hidden" : "block"
-                          } bg-[#282828] h-max w-max py-2 text-gray-300 rounded-lg`}
-                        >
-                          <div
-                            className="py-2 cursor-pointer hover:bg-[#717171]"
-                            onClick={() => removeComment(value.id)}
-                          >
-                            <div className="flex flex-row items-center justify-center pl-4 pr-3">
-                              <BsTrashFill />
-                              <span className="ml-2">Delete</span>
-                            </div>
-                          </div>
-                        </div>
-
                         <BsThreeDotsVertical
                           className={`${
                             value.userId == user?.id ? "block" : "hidden"
@@ -347,6 +338,24 @@ function index() {
                         />
                       </div>
                       <p className="-mt-4 text-gray-300">{value.comment}</p>
+                    </div>
+
+                    <div
+                      className={`${
+                        value.userId == user?.id ? "block" : "hidden"
+                      } ${
+                        showCommentOptions ? "hidden" : "block"
+                      } bg-[#282828] h-max w-max py-2 text-gray-300 rounded-lg absolute right-4 top-[90px]`}
+                    >
+                      <div
+                        className="py-2 cursor-pointer hover:bg-[#717171]"
+                        onClick={() => removeComment(value.id)}
+                      >
+                        <div className="flex flex-row items-center justify-center pl-4 pr-3">
+                          <BsTrashFill />
+                          <span className="ml-2">Delete</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}

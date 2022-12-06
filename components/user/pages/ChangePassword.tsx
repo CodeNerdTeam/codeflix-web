@@ -13,7 +13,7 @@ function ChangePassword() {
   const [data, setData] = useState<UserEntity>();
 
   const getUser = async () => {
-    const jwtString = await sessionStorage.getItem("token");
+    const jwtString = sessionStorage.getItem("token");
     axios
       .get<UserEntity>(`${baseUrl}/api/users/profile`, {
         headers: { Authorization: `Bearer ${jwtString}` },
@@ -42,9 +42,7 @@ function ChangePassword() {
     setConfirmPassword(value);
   };
 
-  // const id = localStorage.getItem("id");
-
-  const changePassword = (id: String) => {
+  const changePassword = () => {
     if (
       passwordOld.length !== 0 ||
       passwordNew.length !== 0 ||
@@ -59,7 +57,7 @@ function ChangePassword() {
       };
 
       axios
-        .put(`${baseUrl}/api/users/pc/${id}`, data, {
+        .put(`${baseUrl}/api/users/pc`, data, {
           headers: { Authorization: `Bearer ${jwtString}` },
         })
         .then((res) => {
@@ -73,6 +71,7 @@ function ChangePassword() {
           console.log(err);
         });
     } else {
+      return;
     }
   };
 
@@ -353,7 +352,7 @@ function ChangePassword() {
                                 shadow-none transition h-9 rounded no-underline my-[6px] relative items-center justify-center min-w-[64px] 
                                 border-none outline-none overflow-visible align-middle hover:bg-opacity-80"
                                 onClick={() => {
-                                  changePassword(data!.id);
+                                  changePassword();
                                 }}
                               >
                                 <span>Submit</span>

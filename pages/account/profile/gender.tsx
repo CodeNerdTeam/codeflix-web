@@ -16,6 +16,7 @@ import { UserEntity } from "../../../models/UserEntity";
 function gender() {
   const router = useRouter();
   const [user, setUser] = useState<UserEntity>();
+  const [gender, setGender] = useState(true);
 
   useEffect(() => {
     if (sessionStorage.getItem("token") != null) {
@@ -43,6 +44,33 @@ function gender() {
   useEffect(() => {
     getUser();
   }, []);
+
+  const handleChangeGender = () => {
+    const jwtString = sessionStorage.getItem("token");
+
+    if (user?.sex == gender)
+      return alert("Please choose a different gender from your current one!");
+    axios
+      .put(
+        `${baseUrl}/api/users/user-change`,
+        {
+          Name: user?.name,
+          Sex: gender,
+        },
+        {
+          headers: { Authorization: `Bearer ${jwtString}` },
+        }
+      )
+      .then((res) => {
+        //console.log(result);
+        alert("Your information is the most recent.");
+        router.push("/account/profile");
+      })
+      .catch((err) => {
+        alert("Update failed!");
+        console.log(err);
+      });
+  };
 
   return (
     <div className="bg-white w-screen min-h-screen">
@@ -130,12 +158,14 @@ function gender() {
                       >
                         <FormControlLabel
                           value={user?.sex == true}
+                          onSelect={() => setGender(true)}
                           control={<Radio />}
                           label="Male"
                         />
 
                         <FormControlLabel
                           value={user?.sex == false}
+                          onSelect={() => setGender(false)}
                           control={<Radio />}
                           label="Female"
                         />
@@ -144,7 +174,10 @@ function gender() {
                   </div>
 
                   <div className="md:md:px-6 sm:px-4 mt-6">
-                    <button className="p-4 rounded h-9 border flex justify-center items-center hover:bg-cyan-50">
+                    <button
+                      className="p-4 rounded h-9 border flex justify-center items-center hover:bg-cyan-50"
+                      onClick={() => handleChangeGender()}
+                    >
                       <span className="text-sm text-[#1a73e8] font-medium">
                         Confirm
                       </span>
