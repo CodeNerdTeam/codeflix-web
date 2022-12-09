@@ -372,6 +372,9 @@ function ChangePassword() {
                                 className="font-sans tracking-wide font-medium h-9 rounded will-change no-underline py-0 px-2 my-[6px] 
                                   relative items-center justify-center border-none outline-none overflow-visible align-middle normal-case
                                   hover:bg-[#f2f6fa]"
+                                onClick={() =>
+                                  router.push("/account/password-recovery")
+                                }
                               >
                                 <span className="text-[#1a73e8]">
                                   Forgot your password?

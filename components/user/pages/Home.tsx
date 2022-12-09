@@ -15,7 +15,7 @@ import { FaMedal } from "react-icons/fa";
 function Home() {
   const [data, setData] = useState<UserEntity>();
   const [openAvatar, setOpenAvatar] = useState(true);
-  const [avatar, setAvatar] = useState(null);
+  const [avatarr, setAvatar] = useState(null);
 
   const getUser = async () => {
     const jwtString = await sessionStorage.getItem("token");
@@ -26,8 +26,7 @@ function Home() {
       .then((res) => {
         setData(res.data);
         //localStorage.setItem("id", res.data.id);
-        //localStorage.setItem("avatar", res.data.avatar);
-        //console.log(data);
+        console.log(res.data.avatar);
       })
       .catch((error) => {
         console.log(error);
@@ -51,34 +50,34 @@ function Home() {
     const jwtString = await sessionStorage.getItem("token");
     const avatarRef = ref(storage, `avatars/${v4()}`);
 
-    if (avatar == null) {
+    if (avatarr == null) {
       return;
-    } else {
-      if (data?.avatar != "null") {
-        deleteObjectFirebase(data?.avatar);
-      }
-      uploadBytes(avatarRef, avatar).then(() => {
-        getDownloadURL(avatarRef).then((url) => {
-          axios
-            .put(
-              `${baseUrl}/api/users/avatar`,
-              { avatar: url },
-              {
-                headers: { Authorization: `Bearer ${jwtString}` },
-              }
-            )
-            .then(() => {
-              alert("Change avatar successfully!");
-              // window.location.reload();
-              getUser();
-            })
-            .catch((error) => {
-              alert("Change avatar failed!");
-              console.log(error);
-            });
-        });
-      });
     }
+
+    if (data?.avatar != "") {
+      deleteObjectFirebase(data?.avatar);
+    }
+    uploadBytes(avatarRef, avatarr).then(() => {
+      getDownloadURL(avatarRef).then((url) => {
+        axios
+          .put(
+            `${baseUrl}/api/users/avatar`,
+            { avatar: url },
+            {
+              headers: { Authorization: `Bearer ${jwtString}` },
+            }
+          )
+          .then(() => {
+            alert("Change avatar successfully!");
+            // window.location.reload();
+            getUser();
+          })
+          .catch((error) => {
+            alert("Change avatar failed!");
+            console.log(error);
+          });
+      });
+    });
   };
 
   return (

@@ -1,6 +1,9 @@
+import { PersonFilmEntity } from "./PersonFilmEntity ";
 export interface PersonEntity {
   id: string;
   name: string;
   sex: boolean;
-  description: string;
+  describe: string;
+  films: PersonFilmEntity[];
+  avatar: string;
 }

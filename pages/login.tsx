@@ -194,7 +194,10 @@ function login() {
 
                 <p className="forget">
                   Forgot password?{" "}
-                  <a href="#" className="hover:text-blue-500">
+                  <a
+                    href="/signin/password-recovery"
+                    className="hover:text-blue-500"
+                  >
                     Click Here
                   </a>
                 </p>

@@ -75,13 +75,13 @@ const Home = ({
   const [dataSearch, setDataSearch] = useState<FilmEntity[]>([]);
   const [movie, setMovie] = useState<FilmEntity>();
   const [keywords, setKeywords] = useState("");
-  // const [comment, setComment] = useState("");
-  // const [showCommentOptions, setShowCommentOptions] = useState(true);
+  const [comment, setComment] = useState("");
+  const [showCommentOptions, setShowCommentOptions] = useState(true);
   const [avgRating, setAvgRating] = useState(0);
   const [reviews, setReviews] = useState(0);
   const [user, setUser] = useState<UserEntity>();
-  // const [rating, setRating] = useState<number | null>(2);
-  // const [hover, setHover] = useState(-1);
+  const [rating, setRating] = useState<number | null>(2);
+  const [hover, setHover] = useState(-1);
 
   useEffect(() => {
     if (
@@ -137,6 +137,7 @@ const Home = ({
       .then((res) => {
         setMovie(res.data);
         localStorage.setItem("film", res.data.id);
+        localStorage.setItem("idProducer", res.data.producerId);
         //console.log(res.data);
         let sum = 0;
         let totalComment = 0;
@@ -175,28 +176,28 @@ const Home = ({
       });
   };
 
-  // const addComment = async () => {
-  //   const jwtString = await sessionStorage.getItem("token");
-  //   axios
-  //     .post(
-  //       `${baseUrl}/api/rating/create`,
-  //       {
-  //         filmId: movie?.id,
-  //         point: rating,
-  //         comment: comment,
-  //       },
-  //       {
-  //         headers: { Authorization: `Bearer ${jwtString}` },
-  //       }
-  //     )
-  //     .then(() => {
-  //       getFilmById(movie!.id);
-  //       setComment("");
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  const addComment = async () => {
+    const jwtString = await sessionStorage.getItem("token");
+    axios
+      .post(
+        `${baseUrl}/api/rating/create`,
+        {
+          filmId: movie?.id,
+          point: rating,
+          comment: comment,
+        },
+        {
+          headers: { Authorization: `Bearer ${jwtString}` },
+        }
+      )
+      .then(() => {
+        getFilmById(movie!.id);
+        setComment("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const removeComment = async (id: String) => {
     const jwtString = await sessionStorage.getItem("token");
@@ -212,15 +213,15 @@ const Home = ({
       });
   };
 
-  // const onChangeComment = (comment: any) => setComment(comment);
+  const onChangeComment = (comment: any) => setComment(comment);
 
-  // const labels: { [index: string]: string } = {
-  //   1: "Useless",
-  //   2: "Poor",
-  //   3: "Ok",
-  //   4: "Good",
-  //   5: "Excellent",
-  // };
+  const labels: { [index: string]: string } = {
+    1: "Useless",
+    2: "Poor",
+    3: "Ok",
+    4: "Good",
+    5: "Excellent",
+  };
 
   const addPlaylist = async () => {
     console.log("a");
@@ -236,7 +237,7 @@ const Home = ({
         }
       )
       .then(() => {
-        alert("Ok");
+        alert("Ok! (❁´◡`❁)");
       })
       .catch((err) => {
         console.log(err);
@@ -365,11 +366,7 @@ const Home = ({
         objectFit="fill"
       />
 
-      <div
-        className={`${
-          isOpenMovie ? "block" : "hidden"
-        } relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]`}
-      >
+      <div className="relative h-screen bg-gradient-to-b from-gray-900/10 to-[#010511] lg:h-[140vh]">
         <main className="relative px-4 lg:space-y-24 lg:px-16">
           {/* <Banner netflixOriginals={netflixOriginals} /> */}
           <div className="mb-[130px]"></div>
@@ -378,11 +375,10 @@ const Home = ({
 
           <div className="z-[100] flex flex-col items-center justify-center space-x-4 mt-10 md:mt-0">
             <h1 className="text-4xl text-yellow-400 mb-2">Codeflix World</h1>
-            <p className="text-2xl italic mb-[30px] !ml-0">
-              "What keywords make you happy?
-              <br />
-              Which movie inspired you?"
-            </p>
+            <div className="text-2xl italic mb-[30px] !ml-0 flex flex-col items-center">
+              <p>"What keywords make you happy?</p>
+              <p>Which movie inspired you?"</p>
+            </div>
             <div className="flex flex-row text-sm font-light">
               <input
                 type="text"
@@ -496,10 +492,21 @@ const Home = ({
                   Genres:{" "}
                   {movie?.genres.map((value) => (
                     <span className="mt-5 text-gray-300 font-normal text-sm">
-                      <a href="" className="hover:text-yellow-300">
-                        {value.genre.name}
-                      </a>
-                      ,{" "}
+                      <a
+                        title={value.genre.name}
+                        className="hover:text-yellow-300 cursor-pointer"
+                        onClick={() => {
+                          router.push({
+                            pathname: "/films/genre/[idGenre]",
+                            query: { idGenre: value.genreId },
+                          });
+                        }}
+                      >
+                        <>
+                          {value.genre.name}
+                          {localStorage.setItem("idGenre", value.genreId)}
+                        </>
+                      </a>{" "}
                     </span>
                   ))}
                 </span>
@@ -513,7 +520,21 @@ const Home = ({
                       key={key}
                       className="mt-5 text-gray-300 font-normal text-sm"
                     >
-                      {value.person.name},{" "}
+                      <a
+                        title={value.person.name}
+                        className="hover:text-yellow-300 cursor-pointer"
+                        onClick={() => {
+                          router.push({
+                            pathname: "/films/person/[idPerson]",
+                            query: { idPerson: value.personId },
+                          });
+                        }}
+                      >
+                        <>
+                          {value.person.name}
+                          {localStorage.setItem("idPerson", value.personId)}
+                        </>
+                      </a>{" "}
                     </span>
                   ))}
                 </span>
@@ -523,7 +544,18 @@ const Home = ({
                 <span className="mt-5 font-semibold">
                   Producer:{" "}
                   <span className="mt-5 text-gray-300 text-sm font-normal">
-                    {movie?.producer.name}
+                    <a
+                      title={movie?.producer.name}
+                      className="hover:text-yellow-300 cursor-pointer"
+                      onClick={() => {
+                        router.push({
+                          pathname: "/films/producer/[idProducer]",
+                          query: { idProducer: movie?.producerId },
+                        });
+                      }}
+                    >
+                      {movie?.producer.name}
+                    </a>{" "}
                   </span>
                 </span>
               </>

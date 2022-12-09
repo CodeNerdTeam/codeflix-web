@@ -32,6 +32,7 @@ function index() {
   const [hover, setHover] = useState(-1);
   const [comment, setComment] = useState("");
   const [showCommentOptions, setShowCommentOptions] = useState(true);
+  const [showInfo, setShowInfo] = useState(true);
 
   useEffect(() => {
     if (
@@ -223,7 +224,13 @@ function index() {
                   <div
                     className="w-max px-3 py-2 mr-2 text-sm text-blue-100 bg-blue-600 rounded hover:text-blue-50 hover:bg-blue-500
                     cursor-pointer"
-                    onClick={() => addComment()}
+                    onClick={() => {
+                      if (comment == "") {
+                        alert("Please enter a comment!");
+                      } else {
+                        addComment();
+                      }
+                    }}
                   >
                     Post
                   </div>
@@ -246,16 +253,81 @@ function index() {
               <>
                 {movie?.ratings.map((value) => (
                   <div className="relative">
-                    <div className="user-info absolute bg-white h-[132px] w-[200px] z-20 left-[143px]">
-                      <div className="relative w-full h-full left-0 top-0">
-                        <video
+                    <div
+                      className={`${
+                        value.userId == localStorage.getItem("userIdComment")
+                          ? "block"
+                          : "hidden"
+                      } ${
+                        showInfo ? "hidden" : "block"
+                      } absolute bg-white h-[135px] w-[250px] left-[143px] shadow shadow-gray-400 z-20`}
+                    >
+                      <div className="relative w-full h-full left-0 top-0 z-20">
+                        {/* <video
                           src="https://cdn.discordapp.com/attachments/1034369224543567936/1048899495854866522/Steam_Workshop--Viet_hoa_Khi_linh_Lang_U.webm"
                           className="absolute w-full h-full object-fill"
                           muted
                           loop
                           autoPlay
-                        />
-                        <span className="absolute">dsdsadasd</span>
+                        /> */}
+
+                        {value.user.premium && value.user.role == "User" ? (
+                          <>
+                            <img
+                              src="https://i.pinimg.com/originals/79/d1/df/79d1dfa43099914774f14b7423282813.gif"
+                              alt=""
+                              className="absolute w-full h-full object-fill z-0"
+                            />
+
+                            <div className="bg-[rgba(0,0,0,0.4)] h-1/2 top-0 w-full z-10 absolute"></div>
+
+                            <div className="absolute z-20 flex items-center gap-2 top-4 left-2">
+                              <img
+                                src={
+                                  value.user?.avatar == ""
+                                    ? "/icon.png"
+                                    : value.user?.avatar
+                                }
+                                alt=""
+                                className="h-20 w-20 rounded-[50%] border border-gray-600"
+                              />
+
+                              <span className="text-base text-[#57cbde] font-medium text-shadow-xl">
+                                {value.user.name}
+                              </span>
+                            </div>
+
+                            <div className="bg-[rgba(0,0,0,0.7)] h-1/2 bottom-0 w-full z-10 absolute"></div>
+                          </>
+                        ) : (
+                          <>
+                            <img
+                              src="https://i.pinimg.com/originals/6b/66/32/6b663216955e50134bba3c796a4fc747.gif"
+                              alt=""
+                              className="absolute w-full h-full object-fill z-0"
+                            />
+
+                            <div className="bg-[rgba(0,0,0,0.4)] h-1/2 top-0 w-full z-10 absolute"></div>
+
+                            <div className="absolute z-20 flex items-center gap-2 top-4 left-2">
+                              <img
+                                src={
+                                  value.user?.avatar == ""
+                                    ? "/icon.png"
+                                    : value.user?.avatar
+                                }
+                                alt=""
+                                className="h-20 w-20 rounded-[50%] border border-gray-600"
+                              />
+
+                              <span className="text-base text-[#57cbde] font-medium text-shadow-xl">
+                                {value.user.name}
+                              </span>
+                            </div>
+
+                            <div className="bg-[rgba(0,0,0,0.7)] h-1/2 bottom-0 w-full z-10 absolute"></div>
+                          </>
+                        )}
                       </div>
                     </div>
 
@@ -265,7 +337,14 @@ function index() {
                           {value.user.premium && value.user.role == "User" ? (
                             <img
                               src="/fireframe.png"
-                              className="avt-user max-w-full absolute -mb-5 -top-[42.5px] h-[101px] w-[101px] z-10"
+                              className="max-w-full absolute -mb-5 -top-[42.5px] h-[101px] w-[101px] z-10 cursor-pointer"
+                              onClick={() => {
+                                localStorage.setItem(
+                                  "userIdComment",
+                                  value.userId
+                                );
+                                setShowInfo(!showInfo);
+                              }}
                             />
                           ) : (
                             ""
@@ -274,7 +353,14 @@ function index() {
                           {value.user.role != "User" ? (
                             <img
                               src="/framelaplanh.png"
-                              className="max-w-full absolute -mb-5 -top-[42.5px] h-[101px] w-[101px] z-10"
+                              className="max-w-full absolute -mb-5 -top-[42.5px] h-[101px] w-[101px] z-10 cursor-pointer"
+                              onClick={() => {
+                                localStorage.setItem(
+                                  "userIdComment",
+                                  value.userId
+                                );
+                                setShowInfo(!showInfo);
+                              }}
                             />
                           ) : (
                             ""

@@ -161,9 +161,15 @@ function playlist() {
 
                       <div
                         className="min-w-[40px] flex justify-center items-center min-h-[40px] rounded-full active:bg-gray-700"
-                        onClick={() =>
-                          setShowOptionsPlaylist(!showOptionsPlaylist)
-                        }
+                        onClick={() => {
+                          setShowOptionsPlaylist(!showOptionsPlaylist);
+                          {
+                            localStorage.setItem(
+                              "idFilmOfPlaylist",
+                              value.filmId
+                            );
+                          }
+                        }}
                       >
                         <div className="relative box-border flex justify-center items-center">
                           <button className="align-middle bg-none m-0 border-none p-0 w-full h-full leading-[0] cursor-pointer">
@@ -175,22 +181,27 @@ function playlist() {
                       </div>
                     </div>
 
-                    <div
-                      className={`${
-                        showOptionsPlaylist ? "hidden" : "block"
-                      } bg-[#282828] min-h-[40px] min-w-[40px] text-gray-300 rounded-lg mr-1 flex justify-center
-                        items-center absolute -right-1 top-[75px] py-2`}
-                    >
+                    {value.filmId ==
+                    localStorage.getItem("idFilmOfPlaylist") ? (
                       <div
-                        className="py-1 cursor-pointer hover:bg-[#717171]"
-                        onClick={() => removeFromPlaylist(value.id)}
+                        className={`${
+                          showOptionsPlaylist ? "hidden" : "block"
+                        } bg-[#282828] min-h-[40px] min-w-[40px] text-gray-300 rounded-lg mr-1 flex justify-center
+                        items-center absolute -right-1 top-[75px] py-2`}
                       >
-                        <div className="flex items-center justify-center px-4 py-1">
-                          <BsTrashFill />
-                          <span className="ml-4">Remove from playlist</span>
+                        <div
+                          className="py-1 cursor-pointer hover:bg-[#717171]"
+                          onClick={() => removeFromPlaylist(value.id)}
+                        >
+                          <div className="flex items-center justify-center px-4 py-1">
+                            <BsTrashFill />
+                            <span className="ml-4">Remove from playlist</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 ))}
               </div>

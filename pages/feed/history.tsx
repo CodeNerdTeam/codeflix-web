@@ -66,6 +66,20 @@ function history() {
       });
   };
 
+  const removeFromHistory = async (id: String) => {
+    const jwtString = sessionStorage.getItem("token");
+    axios
+      .delete(`${baseUrl}/api/users/history/${id}`, {
+        headers: { Authorization: `Bearer ${jwtString}` },
+      })
+      .then(() => {
+        getUser();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Head>
@@ -174,55 +188,59 @@ function history() {
                       </div>
                     </div>
 
-                    <div
-                      className={`${
-                        showOptionsPlaylist ? "hidden" : "block"
-                      } bg-[#282828] min-h-[40px] min-w-[40px] text-gray-300 rounded-lg mr-1 flex justify-center
+                    {value.filmId == localStorage.getItem("idFilmOfHistory") ? (
+                      <div
+                        className={`${
+                          showOptionsPlaylist ? "hidden" : "block"
+                        } bg-[#282828] min-h-[40px] min-w-[40px] text-gray-300 rounded-lg mr-1 flex justify-center
                         items-center flex-col py-2`}
-                    >
-                      <div
-                        className="py-1 cursor-pointer hover:bg-[#717171] w-full"
-                        // onClick={() => removeFromPlaylist(value.id)}
                       >
-                        <div className="flex items-center px-4 py-1">
-                          <BsTrashFill />
-                          <span className="ml-4">Remove from history</span>
+                        <div
+                          className="py-1 cursor-pointer hover:bg-[#717171] w-full"
+                          onClick={() => removeFromHistory(value.id)}
+                        >
+                          <div className="flex items-center px-4 py-1">
+                            <BsTrashFill />
+                            <span className="ml-4">Remove from history</span>
+                          </div>
                         </div>
-                      </div>
 
-                      <div
-                        className="py-1 cursor-pointer hover:bg-[#717171] w-full"
-                        onClick={() => {
-                          if (
-                            value.film.premium != false &&
-                            user?.premium == true
-                          ) {
-                            addPlaylist();
-                          } else if (
-                            value.film.premium == false &&
-                            user?.premium == true
-                          ) {
-                            addPlaylist();
-                          } else if (
-                            value.film.premium != false &&
-                            user?.premium != true
-                          ) {
-                            setNotice(!notice);
-                          }
-                        }}
-                      >
-                        <div className="flex items-center px-4 py-1">
-                          <MdPlaylistAdd className="text-2xl" />
-                          <span className="ml-4">Add to playlist</span>
+                        <div
+                          className="py-1 cursor-pointer hover:bg-[#717171] w-full"
+                          onClick={() => {
+                            if (
+                              value.film.premium != false &&
+                              user?.premium == true
+                            ) {
+                              addPlaylist();
+                            } else if (
+                              value.film.premium == false &&
+                              user?.premium == true
+                            ) {
+                              addPlaylist();
+                            } else if (
+                              value.film.premium != false &&
+                              user?.premium != true
+                            ) {
+                              setNotice(!notice);
+                            }
+                          }}
+                        >
+                          <div className="flex items-center px-4 py-1">
+                            <MdPlaylistAdd className="text-2xl" />
+                            <span className="ml-4">Add to playlist</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
 
                     <div
                       className="min-w-[40px] flex justify-center items-center min-h-[40px] rounded-full active:bg-gray-700"
                       onClick={() => {
                         setShowOptionsPlaylist(!showOptionsPlaylist);
-                        localStorage.setItem("tempId", value.filmId);
+                        localStorage.setItem("idFilmOfHistory", value.filmId);
                       }}
                     >
                       <div className="relative box-border flex justify-center items-center">
