@@ -23,6 +23,7 @@ import Header from "../../../../components/Header";
 import { baseUrl } from "../../../../constants/api";
 import { FilmEntity } from "../../../../models/FilmEntity";
 import { UserEntity } from "../../../../models/UserEntity";
+import { BiFemaleSign, BiMaleSign } from "react-icons/bi";
 
 function index() {
   const router = useRouter();
@@ -52,19 +53,6 @@ function index() {
       })
       .then((res) => {
         setMovie(res.data);
-        //localStorage.setItem("film", res.data.id);
-        //console.log(res.data);
-        // let sum = 0;
-        // let totalComment = 0;
-        // for (const a of res.data.ratings) {
-        //   if (a.user.role == "User") {
-        //     sum += a.point;
-        //     totalComment = totalComment + 1;
-        //   }
-        // }
-        // const avg = sum / totalComment;
-        // setReviews(totalComment);
-        // setAvgRating(avg);
       })
       .catch((err) => {
         console.log(err);
@@ -182,6 +170,20 @@ function index() {
           </div>
 
           <div className="lg:px-28 md:ml-[5px] md:mt-16 mt-5">
+            <div className="w-full h-40 p-1 mb-6 border border-gray-600 rounded-lg flex gap-4">
+              <img
+                src={movie?.webUrl}
+                alt={movie?.name}
+                className="h-full w-1/5 rounded"
+              />
+              <div className="flex flex-col gap-4 p-2">
+                <h1 className="text-lg text-blue-200">{movie?.name}</h1>
+                <span className="text-sm text-gray-200 tracking-wide">
+                  {movie?.describe}
+                </span>
+              </div>
+            </div>
+
             <div className="w-full rounded-lg shadow-md shadow-blue-600/50 mb-6">
               <form action="" className="w-full p-4">
                 <div className="flex flex-row items-center">
@@ -253,97 +255,161 @@ function index() {
               <>
                 {movie?.ratings.map((value) => (
                   <div className="relative">
-                    <div
-                      className={`${
-                        value.userId == localStorage.getItem("userIdComment")
-                          ? "block"
-                          : "hidden"
-                      } ${
-                        showInfo ? "hidden" : "block"
-                      } absolute bg-white h-[135px] w-[250px] left-[143px] shadow shadow-gray-400 z-20`}
-                    >
-                      <div className="relative w-full h-full left-0 top-0 z-20">
-                        {/* <video
-                          src="https://cdn.discordapp.com/attachments/1034369224543567936/1048899495854866522/Steam_Workshop--Viet_hoa_Khi_linh_Lang_U.webm"
-                          className="absolute w-full h-full object-fill"
-                          muted
-                          loop
-                          autoPlay
-                        /> */}
+                    {value.userId == localStorage.getItem("userIdComment") &&
+                    value.comment == localStorage.getItem("commentOfUser") ? (
+                      <div
+                        className={`${
+                          showInfo ? "hidden" : "block"
+                        } absolute bg-white h-[135px] w-[260px] max-w-[300px] left-[143px] shadow shadow-gray-400 z-20`}
+                      >
+                        <div className="relative w-full h-full left-0 top-0 z-20">
+                          {/* <video
+                            src="https://cdn.discordapp.com/attachments/1034369224543567936/1048899495854866522/Steam_Workshop--Viet_hoa_Khi_linh_Lang_U.webm"
+                            className="absolute w-full h-full object-fill"
+                            muted
+                            loop
+                            autoPlay
+                          /> */}
 
-                        {value.user.premium && value.user.role == "User" ? (
-                          <>
-                            <img
-                              src="https://i.pinimg.com/originals/79/d1/df/79d1dfa43099914774f14b7423282813.gif"
-                              alt=""
-                              className="absolute w-full h-full object-fill z-0"
-                            />
-
-                            <div className="bg-[rgba(0,0,0,0.4)] h-1/2 top-0 w-full z-10 absolute"></div>
-
-                            <div className="absolute z-20 flex items-center gap-2 top-4 left-2">
+                          {value.user.premium && value.user.role == "User" ? (
+                            <>
                               <img
-                                src={
-                                  value.user?.avatar == ""
-                                    ? "/icon.png"
-                                    : value.user?.avatar
-                                }
+                                src="https://i.pinimg.com/originals/5f/cb/5b/5fcb5b7238144e58a3feb870298f600d.gif"
                                 alt=""
-                                className="h-20 w-20 rounded-[50%] border border-gray-600"
+                                className="absolute w-full h-full object-fill z-0"
                               />
 
-                              <span className="text-base text-[#57cbde] font-medium text-shadow-xl">
-                                {value.user.name}
-                              </span>
-                            </div>
+                              <div className="bg-[rgba(0,0,0,0.4)] h-1/2 top-0 w-full z-10 absolute"></div>
 
-                            <div className="bg-[rgba(0,0,0,0.7)] h-1/2 bottom-0 w-full z-10 absolute"></div>
-                          </>
-                        ) : (
-                          <>
-                            <img
-                              src="https://i.pinimg.com/originals/6b/66/32/6b663216955e50134bba3c796a4fc747.gif"
-                              alt=""
-                              className="absolute w-full h-full object-fill z-0"
-                            />
+                              <div className="absolute z-20 flex items-center gap-2 top-4 left-2">
+                                <img
+                                  src={
+                                    value.user?.avatar == ""
+                                      ? "/icon.png"
+                                      : value.user?.avatar
+                                  }
+                                  alt=""
+                                  className="h-20 w-20 rounded-[50%] border border-gray-600"
+                                />
 
-                            <div className="bg-[rgba(0,0,0,0.4)] h-1/2 top-0 w-full z-10 absolute"></div>
+                                <span
+                                  className="text-base text-[#57cbde] font-medium text-shadow-xl capitalize flex items-center
+                                  justify-center"
+                                >
+                                  {value.user.name}
+                                  {value.user.sex ? (
+                                    <BiMaleSign className="ml-1" />
+                                  ) : (
+                                    <BiFemaleSign className="ml-1" />
+                                  )}
+                                </span>
+                              </div>
 
-                            <div className="absolute z-20 flex items-center gap-2 top-4 left-2">
-                              <img
-                                src={
-                                  value.user?.avatar == ""
-                                    ? "/icon.png"
-                                    : value.user?.avatar
-                                }
-                                alt=""
-                                className="h-20 w-20 rounded-[50%] border border-gray-600"
-                              />
+                              <div className="bg-[rgba(0,0,0,0.8)] h-1/2 bottom-0 w-full z-10 absolute"></div>
+                            </>
+                          ) : (
+                            <>
+                              {value.user.premium == false &&
+                              value.user.role == "User" ? (
+                                <>
+                                  {/* <img
+                                    src="https://i.pinimg.com/originals/79/d1/df/79d1dfa43099914774f14b7423282813.gif"
+                                    alt=""
+                                    className="absolute w-full h-full object-fill z-0"
+                                  /> */}
 
-                              <span className="text-base text-[#57cbde] font-medium text-shadow-xl">
-                                {value.user.name}
-                              </span>
-                            </div>
+                                  <div className="h-full w-full absolute z-0 bg-gray-400"></div>
 
-                            <div className="bg-[rgba(0,0,0,0.7)] h-1/2 bottom-0 w-full z-10 absolute"></div>
-                          </>
-                        )}
+                                  <div className="bg-[rgba(0,0,0,0.4)] h-1/2 top-0 w-full z-10 absolute"></div>
+
+                                  <div className="absolute z-20 flex items-center gap-2 top-4 left-2">
+                                    <img
+                                      src={
+                                        value.user?.avatar == ""
+                                          ? "/icon.png"
+                                          : value.user?.avatar
+                                      }
+                                      alt=""
+                                      className="h-20 w-20 rounded-[50%] border border-gray-600"
+                                    />
+
+                                    <span
+                                      className="text-base text-[#57cbde] font-medium text-shadow-xl capitalize flex items-center
+                                      justify-center"
+                                    >
+                                      {value.user.name}
+                                      {value.user.sex ? (
+                                        <BiMaleSign className="ml-1" />
+                                      ) : (
+                                        <BiFemaleSign className="ml-1" />
+                                      )}
+                                    </span>
+                                  </div>
+
+                                  <div className="bg-[rgba(0,0,0,0.8)] h-1/2 bottom-0 w-full z-10 absolute"></div>
+                                </>
+                              ) : (
+                                <>
+                                  <img
+                                    src="https://i.pinimg.com/originals/6b/66/32/6b663216955e50134bba3c796a4fc747.gif"
+                                    alt=""
+                                    className="absolute w-full h-full object-fill z-0"
+                                  />
+
+                                  <div className="bg-[rgba(0,0,0,0.4)] h-1/2 top-0 w-full z-10 absolute"></div>
+
+                                  <div className="absolute z-20 flex items-center gap-2 top-4 left-2">
+                                    <img
+                                      src={
+                                        value.user?.avatar == ""
+                                          ? "/icon.png"
+                                          : value.user?.avatar
+                                      }
+                                      alt=""
+                                      className="h-20 w-20 rounded-[50%] border border-gray-600"
+                                    />
+
+                                    <span
+                                      className="text-base text-[#57cbde] font-medium text-shadow-xl capitalize flex items-center
+                                      justify-center"
+                                    >
+                                      {value.user.name}
+                                      {value.user.sex ? (
+                                        <BiMaleSign className="ml-1" />
+                                      ) : (
+                                        <BiFemaleSign className="ml-1" />
+                                      )}
+                                    </span>
+                                  </div>
+
+                                  <div className="bg-[rgba(0,0,0,0.8)] h-1/2 bottom-0 w-full z-10 absolute"></div>
+                                </>
+                              )}
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
 
                     <div className="relative grid grid-cols-1 gap-4 p-4 mt-8 mb-2 border rounded-lg bg-[#0f0f0f] shadow-lg w-full">
-                      <div className="relative flex gap-4">
+                      <div className="relative flex gap-4 items-center">
                         <div className="flex items-center justify-center box-border relative shadow w-32">
                           {value.user.premium && value.user.role == "User" ? (
                             <img
-                              src="/fireframe.png"
-                              className="max-w-full absolute -mb-5 -top-[42.5px] h-[101px] w-[101px] z-10 cursor-pointer"
+                              src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/items/1061180/265ad42925714bdab585bf9d477d6c2f5a182a5e.png"
+                              className="max-w-full absolute -mb-5 -top-[42.5px] h-[101px] z-10 cursor-pointer"
                               onClick={() => {
+                                setShowInfo(!showInfo);
                                 localStorage.setItem(
                                   "userIdComment",
                                   value.userId
                                 );
-                                setShowInfo(!showInfo);
+                                localStorage.setItem(
+                                  "commentOfUser",
+                                  value.comment
+                                );
                               }}
                             />
                           ) : (
@@ -355,11 +421,15 @@ function index() {
                               src="/framelaplanh.png"
                               className="max-w-full absolute -mb-5 -top-[42.5px] h-[101px] w-[101px] z-10 cursor-pointer"
                               onClick={() => {
+                                setShowInfo(!showInfo);
                                 localStorage.setItem(
                                   "userIdComment",
                                   value.userId
                                 );
-                                setShowInfo(!showInfo);
+                                localStorage.setItem(
+                                  "commentOfUser",
+                                  value.comment
+                                );
                               }}
                             />
                           ) : (
@@ -372,14 +442,25 @@ function index() {
                                 ? "/icon.png"
                                 : value.user?.avatar
                             }
-                            className="relative -top-8 -mb-4 bg-white border h-20 w-20"
+                            className="relative -top-8 -mb-4 bg-white h-20 w-20 rounded cursor-pointer"
                             loading="lazy"
+                            onClick={() => {
+                              setShowInfo(!showInfo);
+                              localStorage.setItem(
+                                "userIdComment",
+                                value.userId
+                              );
+                              localStorage.setItem(
+                                "commentOfUser",
+                                value.comment
+                              );
+                            }}
                           />
                         </div>
 
                         <div className="flex flex-col w-full">
                           <div className="flex flex-row text-gray-200">
-                            <p className="relative text-xl whitespace-nowrap truncate overflow-hidden">
+                            <p className="relative text-xl whitespace-nowrap truncate overflow-hidden capitalize">
                               {value.user?.name}
                             </p>
 
@@ -418,37 +499,45 @@ function index() {
                           className={`${
                             value.userId == user?.id ? "block" : "hidden"
                           } text-2xl cursor-pointer active:bg-gray-700 h-10 w-10 p-2 rounded-full ml-2 relative left-0`}
-                          onClick={() =>
-                            setShowCommentOptions(!showCommentOptions)
-                          }
+                          onClick={() => {
+                            setShowCommentOptions(!showCommentOptions);
+                            localStorage.setItem(
+                              "commentOfUser",
+                              value.comment
+                            );
+                          }}
                         />
                       </div>
                       <p className="-mt-4 text-gray-300">{value.comment}</p>
                     </div>
 
-                    <div
-                      className={`${
-                        value.userId == user?.id ? "block" : "hidden"
-                      } ${
-                        showCommentOptions ? "hidden" : "block"
-                      } bg-[#282828] h-max w-max py-2 text-gray-300 rounded-lg absolute right-4 top-[90px]`}
-                    >
+                    {value.userId == user?.id &&
+                    value.comment == localStorage.getItem("commentOfUser") ? (
                       <div
-                        className="py-2 cursor-pointer hover:bg-[#717171]"
-                        onClick={() => removeComment(value.id)}
+                        className={`${
+                          showCommentOptions ? "hidden" : "block"
+                        } bg-[#282828] h-max w-max py-2 text-gray-300 rounded-lg absolute right-4 top-[101px]`}
                       >
-                        <div className="flex flex-row items-center justify-center pl-4 pr-3">
-                          <BsTrashFill />
-                          <span className="ml-2">Delete</span>
+                        <div
+                          className="py-2 cursor-pointer hover:bg-[#717171]"
+                          onClick={() => removeComment(value.id)}
+                        >
+                          <div className="flex flex-row items-center justify-center pl-4 pr-3">
+                            <BsTrashFill />
+                            <span className="ml-2">Delete</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 ))}
               </>
             </div>
           </div>
         </div>
+        <div className="h-2 sm:h-8"></div>
       </main>
     </>
   );

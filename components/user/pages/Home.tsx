@@ -88,7 +88,7 @@ function Home() {
             <div className="flex items-center justify-center relative">
               {data?.premium ? (
                 <img
-                  src="/framegao.png"
+                  src="/baybayframe.png"
                   className="w-[130px] h-[130px] align-middle absolute z-10"
                 />
               ) : (
@@ -120,7 +120,7 @@ function Home() {
             </div>
 
             <div className="flex flex-row items-center justify-center my-5">
-              <h1 className="text-3xl font-normal text-[#202124] text-center mr-2">
+              <h1 className="text-3xl font-normal text-[#202124] text-center mr-2 capitalize">
                 Hello {data?.name}
               </h1>
               {data?.premium ? (
@@ -239,7 +239,7 @@ function Home() {
                         >
                           {data?.premium ? (
                             <img
-                              src="/framegao.png"
+                              src="/baybayframe.png"
                               className="w-full h-full align-middle absolute"
                             />
                           ) : (
@@ -286,7 +286,6 @@ function Home() {
                 </div>
               </div>
             </div>
-            <div></div>
           </div>
         </div>
       </div>

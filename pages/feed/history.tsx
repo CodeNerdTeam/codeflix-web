@@ -52,14 +52,14 @@ function history() {
       .post(
         `${baseUrl}/api/users/playlist`,
         {
-          filmId: localStorage.getItem("tempId"),
+          filmId: localStorage.getItem("idFilmOfHistory"),
         },
         {
           headers: { Authorization: `Bearer ${jwtString} ` },
         }
       )
       .then(() => {
-        alert("Ok");
+        alert("Ok! (❁´◡`❁)");
       })
       .catch((err) => {
         console.log(err);
@@ -125,12 +125,27 @@ function history() {
 
                     <div
                       className="p-2 cursor-pointer min-w-0 flex flex-row flex-1 basis-[0.000000001px] flex-wrap justify-start"
-                      onClick={() =>
-                        router.push({
-                          pathname: "/film/watch/[idFilm]",
-                          query: { idFilm: value.filmId },
-                        })
-                      }
+                      onClick={() => {
+                        if (user?.premium) {
+                          router.push({
+                            pathname: "/film/watch/[idFilm]",
+                            query: { idFilm: value.filmId },
+                          });
+                        } else if (
+                          value.film.premium &&
+                          user?.premium != true
+                        ) {
+                          setNotice(!notice);
+                        } else if (
+                          value.film.premium == false &&
+                          user?.premium == false
+                        ) {
+                          router.push({
+                            pathname: "/film/watch/[idFilm]",
+                            query: { idFilm: value.filmId },
+                          });
+                        }
+                      }}
                     >
                       <div className="min-w-0 basis-[368px] flex-grow flex flex-row ">
                         <div className="mr-2 h-[92px] w-[120px] flex-none relative">
@@ -139,9 +154,9 @@ function history() {
                             non-text-decoration"
                           >
                             {value.film.premium ? (
-                              <div className="status animate-pulse ">
-                                <span className="tracking-normal text-base font-mono">
-                                  P
+                              <div className="status animate-pulse py-[1px] px-[5px]">
+                                <span className="tracking-normal text-xs font-mono">
+                                  Pre
                                 </span>
                               </div>
                             ) : (
@@ -208,20 +223,9 @@ function history() {
                         <div
                           className="py-1 cursor-pointer hover:bg-[#717171] w-full"
                           onClick={() => {
-                            if (
-                              value.film.premium != false &&
-                              user?.premium == true
-                            ) {
+                            if (user?.premium) {
                               addPlaylist();
-                            } else if (
-                              value.film.premium == false &&
-                              user?.premium == true
-                            ) {
-                              addPlaylist();
-                            } else if (
-                              value.film.premium != false &&
-                              user?.premium != true
-                            ) {
+                            } else {
                               setNotice(!notice);
                             }
                           }}

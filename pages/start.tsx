@@ -1,8 +1,6 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import Wallpaper from "../assets/wallpaperflare.com_wallpaper.jpg";
 
 function start() {
   const router = useRouter();
@@ -22,13 +20,6 @@ function start() {
           <title>Codeflix - Watch Movies Online</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-
-        {/* <Image
-          src={Wallpaper}
-          layout="fill"
-          objectFit="cover"
-          className="opacity-50"
-        /> */}
 
         <div
           className="bg-[url('/toweroffantasymobile.jpg')] bg-cover pt-12 flex justify-center md:bg-[url('/toweroffantasy.jpg')]
@@ -55,9 +46,10 @@ function start() {
           height={150}
         />
 
-        <div className="absolute top-1/3 text-center mx-auto w-full space-y-5 md:space-y-7 text-shadow-md">
+        <div className="absolute text-center mx-auto w-full space-y-5 md:space-y-7 text-shadow-md">
           <h2 className="text-4xl md:text-6xl max-w-2xl mx-auto font-semibold text-[#2beaf1] font-serif">
-            Unlimited movies, TV shows, and more.
+            This Christmas, you are alone. Watch movies on Codeflix to get
+            through this boring Christmas season!
           </h2>
           <p
             className="text-lg md:text-2xl max-w-2xl mx-auto font-semibold text-transparent bg-clip-text 

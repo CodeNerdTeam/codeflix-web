@@ -50,28 +50,30 @@ function name() {
     const jwtString = sessionStorage.getItem("token");
 
     if (name == "") return;
-    if (user?.name == name)
+    if (user?.name === name)
       return alert("Your name must be different from your current name!");
-    axios
-      .put(
-        `${baseUrl}/api/users/user-change`,
-        {
-          Name: name,
-          Sex: user?.sex,
-        },
-        {
-          headers: { Authorization: `Bearer ${jwtString}` },
-        }
-      )
-      .then((res) => {
-        //console.log(result);
-        alert("Your information is the most recent.");
-        router.push("/account/profile");
-      })
-      .catch((err) => {
-        alert("Update failed!");
-        console.log(err);
-      });
+    else {
+      axios
+        .put(
+          `${baseUrl}/api/users/user-change`,
+          {
+            Name: name,
+            Sex: user?.sex,
+          },
+          {
+            headers: { Authorization: `Bearer ${jwtString}` },
+          }
+        )
+        .then((res) => {
+          //console.log(result);
+          alert("Your information is the most recent.");
+          router.push("/account/profile");
+        })
+        .catch((err) => {
+          alert("Update failed!");
+          console.log(err);
+        });
+    }
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {};

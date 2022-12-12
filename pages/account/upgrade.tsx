@@ -1,3 +1,4 @@
+import { Box, LinearProgress } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
@@ -6,7 +7,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Topbar from "../../components/user/Topbar";
 import { baseUrl } from "../../constants/api";
 import { PackageEntity } from "../../models/PackageEntity";
@@ -18,6 +19,9 @@ function upgrade() {
   const [goi, setGoi] = useState<PackageEntity>();
   const [user, setUser] = useState<UserEntity>();
   const [choosePack, setChoosePack] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [buffer, setBuffer] = useState(10);
+  const [isShowLoading, setIsShowLoading] = useState(true);
 
   useEffect(() => {
     if (sessionStorage.getItem("token") != null) {
@@ -101,6 +105,7 @@ function upgrade() {
 
   const payment = async () => {
     const jwtString = await sessionStorage.getItem("token");
+    setIsShowLoading(!isShowLoading);
     axios
       .post(
         `${baseUrl}/api/users/payment`,
@@ -121,9 +126,36 @@ function upgrade() {
           "You don't have enough ZEN to purchase or You are already a member of Codeflix, " +
             "you cannot buy any more packages before the expiry date of the package you already own!"
         );
+        window.location.reload();
         console.log(err);
       });
   };
+
+  const progressRef = useRef(() => {});
+
+  useEffect(() => {
+    progressRef.current = () => {
+      if (progress > 100) {
+        setProgress(0);
+        setBuffer(10);
+      } else {
+        const diff = Math.random() * 10;
+        const diff2 = Math.random() * 10;
+        setProgress(progress + diff);
+        setBuffer(progress + diff + diff2);
+      }
+    };
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      progressRef.current();
+    }, 500);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
     <>
@@ -132,6 +164,20 @@ function upgrade() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Topbar />
+
+      <Box
+        sx={{ width: "100%" }}
+        className={`${
+          isShowLoading ? "hidden" : "block"
+        } absolute top-0 left-0 right-0 z-[999]`}
+      >
+        <LinearProgress
+          variant="buffer"
+          value={progress}
+          valueBuffer={buffer}
+          color="secondary"
+        />
+      </Box>
 
       <div className="min-h-[139px]">
         <div className="bg-white">
@@ -149,10 +195,7 @@ function upgrade() {
                   </h4>
 
                   <FormControl>
-                    <RadioGroup
-                      aria-labelledby="demo-radio-buttons-group-label"
-                      name="radio-buttons-group"
-                    >
+                    <RadioGroup name="radio-buttons-group">
                       <>
                         {data.map((value) => {
                           return (

@@ -198,7 +198,7 @@ function Profile() {
 
                                   <div className="flex-grow flex-shrink mr-6">
                                     <div className="flex items-center pt-1">
-                                      <div className="font-sans font-normal tracking-wide text-sm text-[rgb(32,33,36)] m-0 p-0 w-full">
+                                      <div className="font-sans font-normal tracking-wide text-sm text-[rgb(32,33,36)] m-0 p-0 w-full capitalize">
                                         {data?.name}
                                       </div>
                                     </div>

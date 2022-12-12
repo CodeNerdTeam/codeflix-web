@@ -16,7 +16,7 @@ import { UserEntity } from "../../../models/UserEntity";
 function gender() {
   const router = useRouter();
   const [user, setUser] = useState<UserEntity>();
-  const [gender, setGender] = useState(true);
+  const [gender, setGender] = useState(false);
 
   useEffect(() => {
     if (sessionStorage.getItem("token") != null) {
@@ -34,6 +34,7 @@ function gender() {
       })
       .then((res) => {
         setUser(res.data);
+        setGender(res.data.sex);
         //console.log(data);
       })
       .catch((error) => {
@@ -47,29 +48,30 @@ function gender() {
 
   const handleChangeGender = () => {
     const jwtString = sessionStorage.getItem("token");
-
     if (user?.sex == gender)
       return alert("Please choose a different gender from your current one!");
-    axios
-      .put(
-        `${baseUrl}/api/users/user-change`,
-        {
-          Name: user?.name,
-          Sex: gender,
-        },
-        {
-          headers: { Authorization: `Bearer ${jwtString}` },
-        }
-      )
-      .then((res) => {
-        //console.log(result);
-        alert("Your information is the most recent.");
-        router.push("/account/profile");
-      })
-      .catch((err) => {
-        alert("Update failed!");
-        console.log(err);
-      });
+    else {
+      axios
+        .put(
+          `${baseUrl}/api/users/user-change`,
+          {
+            Name: user?.name,
+            Sex: gender,
+          },
+          {
+            headers: { Authorization: `Bearer ${jwtString}` },
+          }
+        )
+        .then((res) => {
+          //console.log(res);
+          alert("Your information is the most recent.");
+          router.push("/account/profile");
+        })
+        .catch((err) => {
+          alert("Update failed!");
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -152,20 +154,19 @@ function gender() {
                   <div className="md:px-6 sm:px-4 mt-6 text-[rgb(60,64,67)] text-sm">
                     <FormControl>
                       <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
                         name="radio-buttons-group"
                         defaultValue={user?.sex ? false : true}
                       >
                         <FormControlLabel
                           value={user?.sex == true}
-                          onSelect={() => setGender(true)}
+                          onChange={() => setGender(true)}
                           control={<Radio />}
                           label="Male"
                         />
 
                         <FormControlLabel
                           value={user?.sex == false}
-                          onSelect={() => setGender(false)}
+                          onChange={() => setGender(false)}
                           control={<Radio />}
                           label="Female"
                         />

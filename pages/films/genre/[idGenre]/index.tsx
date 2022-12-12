@@ -122,6 +122,17 @@ function index() {
       </Head>
       <Header />
 
+      <div className="snowflake">❅</div>
+      <div className="snowflake">❅</div>
+      <div className="snowflake">❆</div>
+      <div className="snowflake">❄</div>
+      <div className="snowflake">❅</div>
+      <div className="snowflake">❆</div>
+      <div className="snowflake">❄</div>
+      <div className="snowflake">❅</div>
+      <div className="snowflake">❆</div>
+      <div className="snowflake">❄</div>
+
       <div className="relative h-max bg-gradient-to-b from-gray-900/10 to-[#010511]">
         <main className="relative px-4 lg:space-y-24 lg:px-16">
           <div className="mb-[130px]"></div>
@@ -138,7 +149,7 @@ function index() {
                 {dataMovie?.films.map((data) => (
                   <div
                     title={data.film.name}
-                    className="w-full h-max bg-[#131313] shadow-md border border-black cursor-pointer relative"
+                    className="w-full h-max bg-[#131313] shadow shadow-yellow-100 cursor-pointer relative"
                     onClick={() => {
                       getFilmById(data.filmId);
                       setIsModal(!isModal);
@@ -245,18 +256,12 @@ function index() {
                         title={value.genre.name}
                         className="hover:text-yellow-300 cursor-pointer"
                         onClick={() => {
-                          router.push({
-                            pathname: "/films/genre/[idGenre]",
-                            query: { idGenre: value.genreId },
-                          });
+                          localStorage.setItem("idGenre", value.genreId);
+                          window.location.reload();
                         }}
                       >
-                        <>
-                          {value.genre.name}
-                          {localStorage.setItem("idGenre", value.genreId)}
-                        </>
-                      </a>
-                      ,{" "}
+                        {value.genre.name}
+                      </a>{" "}
                     </span>
                   ))}
                 </span>
@@ -274,18 +279,15 @@ function index() {
                         title={value.person.name}
                         className="hover:text-yellow-300 cursor-pointer"
                         onClick={() => {
+                          localStorage.setItem("idPerson", value.personId);
                           router.push({
                             pathname: "/films/person/[idPerson]",
                             query: { idPerson: value.personId },
                           });
                         }}
                       >
-                        <>
-                          {value.person.name}
-                          {localStorage.setItem("idPerson", value.personId)}
-                        </>
-                      </a>
-                      ,{" "}
+                        {value.person.name}
+                      </a>{" "}
                     </span>
                   ))}
                 </span>

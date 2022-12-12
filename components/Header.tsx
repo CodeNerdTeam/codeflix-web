@@ -1,29 +1,31 @@
-import { SearchIcon } from "@heroicons/react/solid";
 import { useEffect, useRef, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseOutline } from "react-icons/io5";
 import { SiHomebridge } from "react-icons/si";
-import { FaHotjar } from "react-icons/fa";
 import { BiBookHeart } from "react-icons/bi";
-import { MdAccountBox } from "react-icons/md";
+import {
+  MdAccountBox,
+  MdHistoryEdu,
+  MdKeyboardArrowDown,
+} from "react-icons/md";
 import { CiLogin } from "react-icons/ci";
 import { Box, LinearProgress } from "@mui/material";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { baseUrl } from "../constants/api";
-import { FilmEntity } from "../models/FilmEntity";
 import { UserEntity } from "../models/UserEntity";
+import { RiMovie2Line } from "react-icons/ri";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [dropdownFilm, setDropdownFilm] = useState(true);
   const [isOpenDrawer, setIsOpenDrawer] = useState(true);
   const [isOpenOptions, setIsOpenOptions] = useState(true);
+  const [filmFilter, setFilmFilter] = useState(true);
   const [progress, setProgress] = useState(0);
   const [buffer, setBuffer] = useState(10);
   const [isShowLoading, setIsShowLoading] = useState(true);
   const router = useRouter();
-  const [keywords, setKeywords] = useState("");
-  const [dataFilms, setDataFilms] = useState<FilmEntity[]>([]);
   const [data, setData] = useState<UserEntity>();
 
   useEffect(() => {
@@ -95,26 +97,6 @@ export function Header() {
     router.push("/start");
   };
 
-  const handleKeyWordChange = (value: any) => {
-    setKeywords(value);
-  };
-
-  const handleSearches = async (key: String) => {
-    const jwtString = await sessionStorage.getItem("token");
-
-    axios
-      .get<FilmEntity[]>(`${baseUrl}/api/films/search?keyname=${key}`, {
-        headers: { Authorization: `Bearer ${jwtString}` },
-      })
-      .then((res) => {
-        setDataFilms(res.data);
-        //console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const getUser = async () => {
     const jwtString = await sessionStorage.getItem("token");
     axios
@@ -183,7 +165,11 @@ export function Header() {
                 Home
               </div>
             </li>
-            <li className="headerLink">New & Popular</li>
+            <li className="headerLink">
+              <div title="My list" onClick={() => setFilmFilter(!filmFilter)}>
+                Films
+              </div>
+            </li>
             <li className="headerLink">
               <div
                 title="My list"
@@ -207,22 +193,6 @@ export function Header() {
           </ul>
         </div>
         <div className="flex items-center space-x-4 text-sm font-light">
-          {/* <input
-            type="text"
-            className="md:w-96 w-40 focus:outline-none border-b-[1px] border-gray-400 h-10 gap-4 px-4 text-white font-semibold 
-            bg-transparent"
-            placeholder="Enter keyword to search"
-            onChange={(e) => handleKeyWordChange(e.target.value)}
-          />
-
-          <div
-            title="Search"
-            className="p-2 rounded-full hover:bg-gray-800 active:bg-gray-500 cursor-pointer"
-            onClick={() => handleSearches(keywords)}
-          >
-            <SearchIcon className="h-6 w-6 sm:inline" />
-          </div> */}
-
           <div className="cursor-pointer flex items-center justify-center box-border relative shadow h-[51px] w-[51px]">
             <img
               src={data?.avatar == "" ? "/icon.png" : data?.avatar}
@@ -234,7 +204,7 @@ export function Header() {
 
             {data?.premium ? (
               <img
-                src="/fireballframe.png"
+                src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/items/1732740/3fd73db5d33e9b6597e6975eb654e89b89b5db5c.png"
                 className="max-w-full align-middle absolutes z-10"
                 onClick={() => {
                   setIsOpenOptions(!isOpenOptions);
@@ -251,7 +221,7 @@ export function Header() {
       <div
         className={`${
           isOpenDrawer ? "hidden" : "block"
-        } flex flex-row w-full h-full fixed z-[666] top-0`}
+        } flex flex-row w-full h-full fixed z-[667] top-0`}
       >
         <div
           className={`${
@@ -294,14 +264,46 @@ export function Header() {
               <li>
                 <div
                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100
-                dark:hover:bg-gray-700 cursor-pointer"
+                dark:hover:bg-gray-700 cursor-pointer justify-between"
+                  onClick={() => setDropdownFilm(!dropdownFilm)}
                 >
-                  <FaHotjar
-                    className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900
-                dark:group-hover:text-white"
-                  />
-                  <span className="ml-3">News & Popular</span>
+                  <div className="flex">
+                    <RiMovie2Line
+                      className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900
+                  dark:group-hover:text-white"
+                    />
+                    <span className="ml-3">Films</span>
+                  </div>
+                  <MdKeyboardArrowDown className="text-xl" />
                 </div>
+                <ul
+                  className={`${
+                    dropdownFilm ? "hidden" : "block"
+                  } py-2 space-y-2 cj`}
+                >
+                  <li>
+                    <span
+                      className="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11
+                      group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 cursor-pointer"
+                      onClick={() => {
+                        router.push("/films/not-premium");
+                      }}
+                    >
+                      Without premium
+                    </span>
+                  </li>
+                  <li>
+                    <span
+                      className="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11
+                      group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 cursor-pointer"
+                      onClick={() => {
+                        router.push("/films/premium");
+                      }}
+                    >
+                      Premium
+                    </span>
+                  </li>
+                </ul>
               </li>
 
               <li>
@@ -328,7 +330,7 @@ export function Header() {
                     router.push("/feed/history");
                   }}
                 >
-                  <BiBookHeart
+                  <MdHistoryEdu
                     className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900
                 dark:group-hover:text-white"
                   />
@@ -373,6 +375,35 @@ export function Header() {
           >
             <CiLogin className="text-2xl" />
             <span className="ml-4">Sign out</span>
+          </div>
+        </div>
+      </div>
+
+      {/* menu - film filter */}
+      <div
+        className={`${
+          filmFilter ? "hidden" : "block"
+        } z-[666] fixed bg-none h-[1px] left-[18.5%] top-[72px] md:top-[88px] `}
+      >
+        <div
+          className="bg-[#151617] h-max w-max rounded-lg flex flex-col items-center text-white shadow-lg cursor-pointer
+        border border-transparent"
+        >
+          <div
+            className="flex flex-row items-center w-full py-3 px-7 mt-2 hover:bg-gray-500"
+            onClick={() => {
+              router.push("/films/not-premium");
+            }}
+          >
+            <span>Without premium</span>
+          </div>
+          <div
+            className="flex flex-row items-center w-full py-3 px-7 mb-2 hover:bg-gray-500"
+            onClick={() => {
+              router.push("/films/premium");
+            }}
+          >
+            <span>Premium</span>
           </div>
         </div>
       </div>

@@ -51,7 +51,7 @@ function login() {
   };
 
   const handleLogin = () => {
-    if (email.length !== 0 || password.length !== 0) {
+    if (email.length !== 0 && password.length !== 0) {
       setIsShowLoading(!isShowLoading);
       const data = {
         Email: email,
@@ -70,7 +70,7 @@ function login() {
           router.push("/home");
         })
         .catch(() => {
-          alert("Login failed");
+          alert("Login failed!");
           setIsShowLoading(isShowLoading);
         });
     } else {

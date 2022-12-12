@@ -84,12 +84,13 @@ function register() {
 
   const handleRegister = () => {
     if (
-      nameUser.length !== 0 ||
-      phoneNumber.length !== 0 ||
-      email.length !== 0 ||
-      password.length !== 0 ||
-      confirmPassword.length !== 0
+      nameUser.length == 0 ||
+      phoneNumber.length == 0 ||
+      email.length == 0 ||
+      password.length == 0 ||
+      confirmPassword.length == 0
     ) {
+    } else {
       setIsShowLoading(!isShowLoading);
       const data = {
         Name: nameUser,
@@ -111,14 +112,13 @@ function register() {
         .post(url, data)
         .then((result) => {
           //console.log(result);
-          alert("Register Success!");
+          alert("Register Success!\nMerry Christmas🎄🎅");
           router.push("/login");
         })
         .catch(() => {
           alert("Register failed!");
           setIsShowLoading(isShowLoading);
         });
-    } else {
     }
   };
 
