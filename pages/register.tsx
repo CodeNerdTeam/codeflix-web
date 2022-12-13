@@ -98,11 +98,9 @@ function register() {
         Phone: phoneNumber,
         Password: password,
         ConfirmPassword: confirmPassword,
-        PasswordOld: "",
         Avatar: "",
         Premium: false,
         Sex: false,
-        Current: "",
         Role: "User",
       };
 

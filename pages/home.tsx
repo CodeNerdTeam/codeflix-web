@@ -17,6 +17,7 @@ import { baseUrl } from "../constants/api";
 import { FilmEntity } from "../models/FilmEntity";
 import { GenreFilmEntity } from "../models/GenreFilmEntity ";
 import { PersonFilmEntity } from "../models/PersonFilmEntity ";
+import { GenreEntity } from "../models/GenreEntity";
 import { Movie } from "../typings";
 import requests from "../utils/request";
 import { FaMedal, FaPlay } from "react-icons/fa";
@@ -43,6 +44,7 @@ import { render } from "react-dom";
 import { Box, Rating } from "@mui/material";
 import { UserEntity } from "../models/UserEntity";
 import { MdBookmarkAdd, MdBookmarkRemove } from "react-icons/md";
+import { map } from "@firebase/util";
 
 interface Props {
   netflixOriginals: Movie[];

@@ -1,11 +1,11 @@
-import Topbar from "../../../components/user/Topbar";
-import { HiOutlineArrowLeft } from "react-icons/hi";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import { UserEntity } from "../../../models/UserEntity";
 import axios from "axios";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { HiOutlineArrowLeft } from "react-icons/hi";
+import Topbar from "../../../components/user/Topbar";
 import { baseUrl } from "../../../constants/api";
+import { UserEntity } from "../../../models/UserEntity";
 
 function transaction() {
   const router = useRouter();
@@ -13,7 +13,7 @@ function transaction() {
 
   useEffect(() => {
     if (sessionStorage.getItem("token") != null) {
-      router.push("/account/payment/transaction");
+      router.push("/account/wallet/transaction");
     } else {
       router.push("/start");
     }
@@ -41,33 +41,22 @@ function transaction() {
   const renderTransaction = () => {
     return (
       <>
-        {user?.wallet.transactions.map((value) => (
+        {user?.wallet.addFunds.map((value) => (
           <div className="m-auto max-w-[660px]">
             <div className="text-[rgba(0,0,0,.65)] pt-4 px-0 pb-0 md:pt-6 md:pb-0 md:px-0"></div>
             <div
               className="bg-[#fff] shadow-lg md:border md:shadow md:border-solid md:border-[rgb(218,220,224)] 
-          md:overflow-hidden md:my-0 md:mx-auto"
+              md:overflow-hidden md:my-0 md:mx-auto"
             >
               <div className="md:p-6">
                 <div className="flex flex-col text-[rgb(95,99,104)] text-base font-normal tracking-wide">
                   <div>
-                    <span className="font-medium">Name:</span>{" "}
-                    {value.packageName}
+                    <span className="font-medium">Money:</span>{" "}
+                    {value.money.toLocaleString()} ZEN
                   </div>
                   <div>
-                    <span className="font-medium">Price:</span>{" "}
-                    {value.price.toLocaleString()} ZEN
-                  </div>
-                  <div>
-                    <span className="font-medium">Time:</span> {value.time} days
-                  </div>
-                  <div>
-                    <span className="font-medium">Purchase date:</span>{" "}
+                    <span className="font-medium">Recharge date:</span>{" "}
                     {value.created.toString()}
-                  </div>
-                  <div>
-                    <span className="font-medium">Package expiry date:</span>{" "}
-                    {user.dateUse.toString()}
                   </div>
                 </div>
               </div>
@@ -99,7 +88,7 @@ function transaction() {
                 <span className="text-[#5f6368] text-2xl not-italic font-normal tracking-normal non-text-decoration inline-block direction">
                   <HiOutlineArrowLeft
                     onClick={() => {
-                      router.push("/account/payment/payment-package");
+                      router.push("/account/wallet");
                     }}
                   />
                 </span>

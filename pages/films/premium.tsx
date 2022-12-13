@@ -117,7 +117,7 @@ function premium() {
     <>
       <Head>
         <title>
-          Codeflix - Ưatch exclusive movies together for members only
+          Codeflix - Watch exclusive movies together for members only
         </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -141,7 +141,14 @@ function premium() {
           <section className="mt-10 lg:mt-0 md:space-y-24">
             <h1
               className="uppercase text-yellow-400 text-3xl tracking-widest ml-3 w-max border-b-2 border-yellow-600
-              hover:border-yellow-200 mb-10 md:mb-0"
+              hover:border-yellow-200 mb-10 md:mb-0 md:block hidden"
+            >
+              List of movies for Codeflix members
+            </h1>
+
+            <h1
+              className="uppercase text-yellow-400 text-xl tracking-widest ml-3 w-max border-b-2 border-yellow-600
+              hover:border-yellow-200 mb-10 md:mb-0 md:hidden"
             >
               List of movies for Codeflix members
             </h1>

@@ -1,10 +1,10 @@
 import Head from "next/head";
 import React from "react";
-import Wallet from "../../components/user/pages/Wallet";
-import Sidebar from "../../components/user/Sidebar";
-import Topbar from "../../components/user/Topbar";
+import Wallet from "../../../components/user/pages/Wallet";
+import Sidebar from "../../../components/user/Sidebar";
+import Topbar from "../../../components/user/Topbar";
 
-function wallet() {
+function index() {
   return (
     <div className="bg-white w-screen h-screen">
       <Head>
@@ -23,4 +23,4 @@ function wallet() {
   );
 }
 
-export default wallet;
+export default index;

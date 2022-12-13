@@ -1,12 +1,22 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { baseUrl } from "../../../constants/api";
 import { UserEntity } from "../../../models/UserEntity";
 import { WalletEntity } from "../../../models/WalletEntity";
 
 function Wallet() {
+  const router = useRouter();
   const [data, setData] = useState<UserEntity>();
   const [money, setMoney] = useState(0);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("token") != null) {
+      router.push("/account/wallet");
+    } else {
+      router.push("/start");
+    }
+  }, []);
 
   const getUser = async () => {
     const jwtString = await sessionStorage.getItem("token");
@@ -25,26 +35,33 @@ function Wallet() {
 
   const addFunds = async () => {
     const jwtString = await sessionStorage.getItem("token");
-    axios
-      .put<WalletEntity>(
-        `${baseUrl}/api/users/wallets`,
-        {
-          money: money,
-        },
-        {
-          headers: { Authorization: `Bearer ${jwtString}` },
-        }
-      )
-      .then((res) => {
-        alert("Recharge successfully!");
-        getUser();
-        setMoney(0);
-        //console.log(data);
-      })
-      .catch((error) => {
-        alert("Recharge fail!");
-        console.log(error);
-      });
+
+    if (money < 10000) {
+      alert("The amount must be at least 10,000 ZEN!");
+      setMoney(0);
+    } else {
+      axios
+        .put<WalletEntity>(
+          `${baseUrl}/api/users/wallets`,
+          {
+            money: money,
+            status: true,
+          },
+          {
+            headers: { Authorization: `Bearer ${jwtString}` },
+          }
+        )
+        .then((res) => {
+          alert("Recharge successfully!");
+          getUser();
+          setMoney(0);
+          //console.log(data);
+        })
+        .catch((error) => {
+          alert("Recharge fail!");
+          console.log(error);
+        });
+    }
   };
 
   useEffect(() => {
@@ -123,7 +140,7 @@ function Wallet() {
                               <div className="flex-grow flex-shrink mr-6">
                                 <div className="flex items-center pt-1">
                                   <div className="font-sans font-normal tracking-wide text-sm text-[rgb(32,33,36)] m-0 p-0 w-full">
-                                    {data?.wallet.money} ZEN
+                                    {data?.wallet.money.toLocaleString()} ZEN
                                   </div>
                                 </div>
                               </div>
@@ -160,6 +177,10 @@ function Wallet() {
                           <div className="font-sans text-sm text-[#555] font-normal tracking-wide flex-grow flex-shrink m-0 pt-2 px-0 pb-0">
                             Recharge your wallet to enjoy the moments of using
                             Codeflix's services.
+                          </div>
+                          <div className="font-sans text-sm text-[#555] font-normal tracking-wide flex-grow flex-shrink m-0 pt-2 px-0 pb-0">
+                            Minimum deposit amount to the wallet is{" "}
+                            <span className="font-bold">10,000</span> ZEN.
                           </div>
                         </div>
                       </div>
@@ -217,6 +238,19 @@ function Wallet() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="md:w-full relative flex mt-4 items-center justify-center">
+              <div
+                className="w-max hover:bg-slate-100 flex items-center justify-center py-2 px-4 rounded cursor-pointer"
+                onClick={() => {
+                  router.push("/account/wallet/transaction");
+                }}
+              >
+                <span className="text-sky-600 text-base">
+                  Management transaction
+                </span>
               </div>
             </div>
           </section>

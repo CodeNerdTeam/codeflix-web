@@ -215,7 +215,7 @@ function upgrade() {
 
                               <div className="absolute right-5 top-1/2 -translate-y-1/2">
                                 <span className="text-center ml-auto text-base font-medium font-sans text-black">
-                                  {value.price} ZEN
+                                  {value.price.toLocaleString()} ZEN
                                 </span>
                               </div>
                             </div>
@@ -513,7 +513,7 @@ function upgrade() {
                             Package price:
                           </td>
                           <td className="text-right text-black pb-4 font-medium font-sans text-sm">
-                            {goi?.price} ZEN
+                            {goi?.price.toLocaleString()} ZEN
                           </td>
                         </tr>
                         {/* Service pack type */}
@@ -540,7 +540,7 @@ function upgrade() {
                           </td>
                           <td className="text-right text-black font-medium font-sans text-sm">
                             <span className="text-[#ff6500]">
-                              {goi?.price} ZEN
+                              {goi?.price.toLocaleString()} ZEN
                             </span>
                           </td>
                         </tr>

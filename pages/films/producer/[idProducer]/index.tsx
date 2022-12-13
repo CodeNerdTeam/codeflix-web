@@ -139,10 +139,18 @@ function index() {
           <section className="mt-10 lg:mt-0 md:space-y-24">
             <h1
               className="uppercase text-yellow-400 text-3xl tracking-widest ml-3 w-max border-b-2 border-yellow-600
-            hover:border-yellow-200 mb-10 md:mb-0"
+            hover:border-yellow-200 mb-10 md:mb-0 md:block hidden"
             >
               List movies of {dataMovie?.name}
             </h1>
+
+            <h1
+              className="uppercase text-yellow-400 text-xl tracking-widest ml-3 w-max border-b-2 border-yellow-600
+            hover:border-yellow-200 mb-10 md:mb-0 md:hidden"
+            >
+              List movies of {dataMovie?.name}
+            </h1>
+
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
               <>
                 {dataMovie?.films.map((data) => (
@@ -310,7 +318,7 @@ function index() {
                 <div
                   title="Watch now"
                   className="flex mt-5 bg-[#25867d] px-6 py-4 rounded-md w-max cursor-pointer 
-                justify-center items-center hover:opacity-80"
+                  justify-center items-center hover:opacity-80"
                   onClick={() => {
                     if (movie?.premium != false && user?.premium == true) {
                       router.push({

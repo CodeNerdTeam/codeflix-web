@@ -136,13 +136,47 @@ function index() {
         <main className="relative px-4 lg:space-y-24 lg:px-16">
           <div className="mb-[130px]"></div>
 
-          <section className="mt-10 lg:mt-0 md:space-y-24">
+          <section className="mt-10 lg:mt-0 md:space-y-24 space-y-3">
+            <div className="flex w-full h-[300px] p-5 border-b border-x border-blue-400 rounded-lg gap-8">
+              <img
+                src={dataMovie?.avatar}
+                alt={dataMovie?.name}
+                className="w-1/3 rounded"
+              />
+
+              <div className="flex flex-col space-y-4 overflow-scroll scrollbar-hide">
+                <h1 className="text-xl font-medium text-blue-200">
+                  {dataMovie?.name}
+                </h1>
+                <span className="text-gray-300 text-sm tracking-wide">
+                  <span className="font-medium text-base text-gray-200 tracking-normal">
+                    Sex:
+                  </span>{" "}
+                  {dataMovie?.sex ? "Male" : "Female"}
+                </span>
+                <span className="text-gray-300 text-sm tracking-wide">
+                  <span className="font-medium text-base text-gray-200 tracking-normal">
+                    Introduce:
+                  </span>{" "}
+                  {dataMovie?.describe}
+                </span>
+              </div>
+            </div>
+
             <h1
               className="uppercase text-yellow-400 text-3xl tracking-widest ml-3 w-max border-b-2 border-yellow-600
-            hover:border-yellow-200 mb-10 md:mb-0"
+            hover:border-yellow-200 mb-10 md:mb-0 md:block hidden"
             >
               List movies of {dataMovie?.name}
             </h1>
+
+            <h1
+              className="uppercase text-yellow-400 text-xl tracking-widest ml-3 w-max border-b-2 border-yellow-600
+            hover:border-yellow-200 mb-10 md:mb-0 md:hidden"
+            >
+              List movies of {dataMovie?.name}
+            </h1>
+
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
               <>
                 {dataMovie?.films.map((data) => (
